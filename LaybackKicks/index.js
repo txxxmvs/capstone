@@ -91,6 +91,30 @@ app.delete('/api/productos/:id', (req, res) => {
   });
 });
 
+app.get('/api/dashboard', (req, res) => {
+  const sql = 'SELECT precio_compra, precio_venta, cantidad FROM Productos';
+
+  connection.query(sql, (err, productos) => {
+    if (err) {
+      console.error('Error al obtener los datos del dashboard:', err);
+      res.status(500).json({ message: 'Error al obtener los datos del dashboard' });
+    } else {
+      let montoInvertido = 0;
+      let posibleRetorno = 0;
+
+      productos.forEach(producto => {
+        montoInvertido += producto.precio_compra * producto.cantidad;
+        posibleRetorno += producto.precio_venta * producto.cantidad;
+      });
+
+      res.json({
+        montoInvertido,
+        posibleRetorno
+      });
+    }
+  });
+});
+
 app.use(express.static('public'));
 
 app.listen(port, () => {
