@@ -6,6 +6,7 @@ const port = 3000;
 
 app.use(cors());
 app.use(express.json());
+app.use(express.static('public')); 
 
 app.get('/', (req, res) => {
   res.send('¡Servidor funcionando!');
@@ -115,7 +116,25 @@ app.get('/api/dashboard', (req, res) => {
   });
 });
 
-app.use(express.static('public'));
+app.post('/login', (req, res) => {
+  const { username, password } = req.body;
+
+  console.log('Intentando iniciar sesión con:', { username, password });
+
+  const query = 'SELECT * FROM usuario WHERE email = ? AND contraseña = ?';
+  connection.query(query, [username, password], (err, results) => {
+    if (err) {
+      console.error('Error al verificar credenciales:', err);
+      res.status(500).json({ message: 'Error al verificar las credenciales' });
+    } else if (results.length > 0) {
+      console.log('Inicio de sesión exitoso:', results);
+      res.json({ message: 'Inicio de sesión exitoso' });
+    } else {
+      console.warn('Credenciales inválidas');
+      res.status(401).json({ message: 'Correo electrónico o contraseña incorrectos' });
+    }
+  });
+});
 
 app.listen(port, () => {
   console.log(`Servidor corriendo en http://localhost:${port}`);
