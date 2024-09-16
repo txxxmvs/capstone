@@ -48,7 +48,7 @@
             .then(response => response.json())
             .then(data => {
                 if (data.message === 'Inicio de sesión exitoso') {
-                    window.location.href = 'pages/navbar.html';  
+                    window.location.href = 'pages/dashboard.html';  
                 } else {
                     alert(data.message);
                 }

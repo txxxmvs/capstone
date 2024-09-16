@@ -1,0 +1,58 @@
+COMANDOS QUE LES VAN A SERVIR
+
+node index.js
+npm start 
+psql -U postgres -d laybackkicks -h localhost
+net start | findstr /I "postgresql"
+npm install pg
+net start postgresql-x64-16
+
+----------------------------------------------------------------
+
+
+CREAR BD
+
+
+
+CREATE TABLE Usuario (
+    id_usuario SERIAL PRIMARY KEY,
+    email VARCHAR(50) NOT NULL,
+    contrasena VARCHAR(50) NOT NULL
+);
+CREATE TABLE Productos (
+    id_producto SERIAL PRIMARY KEY,
+    modelo VARCHAR(45) NOT NULL,
+    marca VARCHAR(45) NOT NULL,
+    talla INT NOT NULL,
+    condicion VARCHAR(45),
+    precio_compra INT,
+    precio_venta INT,
+    fecha_adquisicion TIMESTAMP,
+    cantidad INT
+);
+CREATE TABLE Proveedores (
+    id_proveedores SERIAL PRIMARY KEY,
+    nombre VARCHAR(45) NOT NULL,
+    telefono INT,
+    email VARCHAR(45),
+    Productos_id_producto INT,
+    FOREIGN KEY (Productos_id_producto) REFERENCES Productos(id_producto)
+);
+CREATE TABLE Venta (
+    id_venta SERIAL PRIMARY KEY,
+    Usuario_id_usuario INT,
+    Productos_id_producto INT,
+    fecha_venta TIMESTAMP,
+    cantidad_venta INT,
+    precio_final INT,  -- Aquí está el cambio de nombre
+    FOREIGN KEY (Usuario_id_usuario) REFERENCES Usuario(id_usuario),
+    FOREIGN KEY (Productos_id_producto) REFERENCES Productos(id_producto)
+);
+
+
+-----------------------------------------------------------------------------
+
+INSERT DE ALGUN USUARIO
+
+INSERT INTO Usuario (email, contraseña)
+VALUES ('ej@correo.com', '123456');
