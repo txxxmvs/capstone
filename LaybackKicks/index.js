@@ -1,10 +1,15 @@
 const express = require('express');
 const cors = require('cors');
+<<<<<<< HEAD
 const pool = require('./bd/bd'); // Importar la conexión desde el archivo db.js
+=======
+const { Pool } = require('pg'); // Importar el módulo para PostgreSQL
+>>>>>>> 307c3ce1288a14cc2991bfec8f3d411a0801737a
 
 const app = express();
 const port = 3000;
 
+<<<<<<< HEAD
 app.use(cors());
 app.use(express.json());
 app.use('/pages', express.static(__dirname + '/pages'));
@@ -14,6 +19,36 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
 });
 
+=======
+// Configuración de la conexión a PostgreSQL
+const pool = new Pool({
+  user: 'postgres',           // Tu usuario de PostgreSQL
+  host: 'localhost',          // El host de tu base de datos
+  database: 'laybackkicks',   // El nombre de la base de datos
+  password: 'asddsa',  // La contraseña que configuraste
+  port: 5432,                 // El puerto de PostgreSQL
+});
+
+// Probar la conexión a la base de datos
+pool.connect(err => {
+  if (err) {
+    console.error('Error al conectar a PostgreSQL:', err);
+  } else {
+    console.log('Conectado a PostgreSQL');
+  }
+});
+
+app.use(cors());
+app.use(express.json());
+app.use('/pages', express.static(__dirname + '/pages'));
+
+
+// Ruta para servir la página principal
+app.get('/', (req, res) => {
+  res.sendFile(__dirname + '/index.html');
+});
+
+>>>>>>> 307c3ce1288a14cc2991bfec8f3d411a0801737a
 // Ruta para guardar un producto
 app.post('/api/guardar_producto', (req, res) => {
   const { marca, modelo, talla, condicion, cantidad, precio_compra, precio_venta, fecha_adq } = req.body;
@@ -54,7 +89,11 @@ app.get('/api/productos', (req, res) => {
 // Ruta para obtener un producto por id
 app.get('/api/productos/:id', (req, res) => {
   const { id } = req.params;
+<<<<<<< HEAD
   const query = 'SELECT * FROM productos WHERE id_producto = $1';
+=======
+  const query = 'SELECT * FROM productos WHERE id = $1';
+>>>>>>> 307c3ce1288a14cc2991bfec8f3d411a0801737a
 
   pool.query(query, [id], (err, result) => {
     if (err) {
@@ -75,7 +114,11 @@ app.put('/api/productos/:id', (req, res) => {
 
   const query = `
     UPDATE productos SET marca = $1, modelo = $2, talla = $3, condicion = $4, cantidad = $5, 
+<<<<<<< HEAD
     precio_compra = $6, precio_venta = $7, fecha_adquisicion = $8 WHERE id_producto = $9
+=======
+    precio_compra = $6, precio_venta = $7, fecha_adquisicion = $8 WHERE id = $9
+>>>>>>> 307c3ce1288a14cc2991bfec8f3d411a0801737a
   `;
   const values = [marca, modelo, talla, condicion, cantidad, precio_compra, precio_venta, fecha_adq, id];
 
@@ -92,7 +135,11 @@ app.put('/api/productos/:id', (req, res) => {
 // Ruta para eliminar un producto por id
 app.delete('/api/productos/:id', (req, res) => {
   const { id } = req.params;
+<<<<<<< HEAD
   const query = 'DELETE FROM productos WHERE id_producto = $1';
+=======
+  const query = 'DELETE FROM productos WHERE id = $1';
+>>>>>>> 307c3ce1288a14cc2991bfec8f3d411a0801737a
 
   pool.query(query, [id], (err, result) => {
     if (err) {
