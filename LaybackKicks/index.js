@@ -9,16 +9,13 @@ app.use(cors());
 app.use(express.json());
 app.use('/pages', express.static(__dirname + '/pages'));
 
-// Ruta para servir la página principal
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
 });
 
-// Ruta para guardar un producto
 app.post('/api/guardar_producto', (req, res) => {
   const { marca, modelo, talla, condicion, cantidad, precio_compra, precio_venta, fecha_adq } = req.body;
 
-   // Log de los valores recibidos
    console.log('Valores recibidos:', { marca, modelo, talla, condicion, cantidad, precio_compra, precio_venta, fecha_adq });
 
   const query = `
@@ -37,7 +34,6 @@ app.post('/api/guardar_producto', (req, res) => {
   });
 });
 
-// Ruta para obtener todos los productos
 app.get('/api/productos', (req, res) => {
   const query = 'SELECT * FROM productos';
 
@@ -51,7 +47,6 @@ app.get('/api/productos', (req, res) => {
   });
 });
 
-// Ruta para obtener un producto por id
 app.get('/api/productos/:id', (req, res) => {
   const { id } = req.params;
   const query = 'SELECT * FROM productos WHERE id_producto = $1';
@@ -68,7 +63,6 @@ app.get('/api/productos/:id', (req, res) => {
   });
 });
 
-// Ruta para actualizar un producto por id
 app.put('/api/productos/:id', (req, res) => {
   const { id } = req.params;
   const { marca, modelo, talla, condicion, cantidad, precio_compra, precio_venta, fecha_adq } = req.body;
@@ -89,7 +83,6 @@ app.put('/api/productos/:id', (req, res) => {
   });
 });
 
-// Ruta para eliminar un producto por id
 app.delete('/api/productos/:id', (req, res) => {
   const { id } = req.params;
   const query = 'DELETE FROM productos WHERE id_producto = $1';
@@ -106,7 +99,6 @@ app.delete('/api/productos/:id', (req, res) => {
   });
 });
 
-// Ruta para obtener el dashboard (información de resumen)
 app.get('/api/dashboard', (req, res) => {
   const query = 'SELECT precio_compra, precio_venta, cantidad FROM productos';
 
@@ -128,7 +120,6 @@ app.get('/api/dashboard', (req, res) => {
   });
 });
 
-// Ruta para login
 app.post('/login', (req, res) => {
   const { username, password } = req.body;
   console.log('Intentando iniciar sesión con:', { username, password });
@@ -149,7 +140,49 @@ app.post('/login', (req, res) => {
   });
 });
 
-// Iniciar el servidor
+app.put('/api/vender_producto/:id', async (req, res) => {
+  const idProducto = parseInt(req.params.id); 
+  const { fecha_venta, precio_final, cantidad_venta } = req.body;
+
+  if (isNaN(idProducto)) {
+    return res.status(400).json({ message: 'ID de producto no válido' });
+  }
+
+  const client = await pool.connect();  
+
+  try {
+    await client.query('BEGIN');
+
+    const usuarioResult = await client.query('SELECT id_usuario FROM usuario LIMIT 1');
+    const idUsuario = usuarioResult.rows[0].id_usuario;
+
+    const productoResult = await client.query('SELECT cantidad FROM productos WHERE id_producto = $1', [idProducto]);
+    const cantidadDisponible = productoResult.rows[0].cantidad;
+
+    if (cantidad_venta > cantidadDisponible) {
+      return res.status(400).json({ message: 'No puedes vender más cantidad de la disponible' });
+    }
+
+    const queryProducto = 'UPDATE productos SET vendido = TRUE, cantidad = cantidad - $1 WHERE id_producto = $2';
+    await client.query(queryProducto, [cantidad_venta, idProducto]);
+
+    const queryVenta = 'INSERT INTO venta (fecha_venta, precio_final, cantidad_venta, productos_id_producto, usuario_id_usuario) VALUES ($1, $2, $3, $4, $5)';
+    await client.query(queryVenta, [fecha_venta, precio_final, cantidad_venta, idProducto, idUsuario]);
+
+    await client.query('COMMIT');
+    
+    res.status(200).json({ message: 'Venta registrada con éxito' });
+    
+  } catch (err) {
+    await client.query('ROLLBACK');
+    console.error('Error al registrar la venta:', err);
+    res.status(500).json({ message: 'Error al registrar la venta' });
+    
+  } finally {
+    client.release();
+  }
+});
+
 app.listen(port, () => {
   console.log(`Servidor corriendo en http://localhost:${port}`);
 });
