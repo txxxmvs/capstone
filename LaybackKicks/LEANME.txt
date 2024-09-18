@@ -29,6 +29,7 @@ CREATE TABLE Productos (
     precio_venta INT,
     fecha_adquisicion TIMESTAMP,
     cantidad INT
+    vendido BOOLEAN DEFAULT FALSE
 );
 CREATE TABLE Proveedores (
     id_proveedores SERIAL PRIMARY KEY,

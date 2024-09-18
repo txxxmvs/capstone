@@ -1,6 +1,23 @@
 $(document).ready(function() {
     cargarProductos();
 
+    function formatearPrecio(valor) {
+        if (typeof valor !== 'string') {
+            valor = valor.toString();
+        }
+        const num = valor.replace(/\D/g, '');
+        return num ? '$' + Number(num).toLocaleString('es-CL') : '';
+    }
+
+    function limpiarPrecio(formato) {
+        return formato.replace(/\./g, '').replace('$', '');
+    }
+
+    $('#precio-compra, #precio-venta').on('input', function() {
+        const valorLimpio = this.value.replace(/\D/g, '');
+        this.value = formatearPrecio(valorLimpio);
+    });
+
     $('#nuevo-producto').submit(function(e) {
         e.preventDefault();
         
@@ -10,8 +27,8 @@ $(document).ready(function() {
             talla: $('#talla').val(),
             condicion: $('#condicion').val(),
             cantidad: $('#cantidad').val(),
-            precio_compra: $('#precio-compra').val(),
-            precio_venta: $('#precio-venta').val(),
+            precio_compra: limpiarPrecio($('#precio-compra').val()),  
+            precio_venta: limpiarPrecio($('#precio-venta').val()),    
             fecha_adq: $('#fecha-adq').val(),
         };
 
@@ -47,8 +64,8 @@ $(document).ready(function() {
                             <td>${producto.talla}</td>
                             <td>${producto.condicion}</td>
                             <td>${producto.cantidad}</td>
-                            <td>${producto.precio_compra}</td>
-                            <td>${producto.precio_venta}</td>
+                            <td>${formatearPrecio(producto.precio_compra)}</td>
+                            <td>${formatearPrecio(producto.precio_venta)}</td>
                             <td>
                                 <button class="btn btn-warning btn-sm editar" data-id="${producto.id_producto}">Editar</button>
                                 <button class="btn btn-danger btn-sm eliminar" data-id="${producto.id_producto}">Eliminar</button>
@@ -56,7 +73,7 @@ $(document).ready(function() {
                         </tr>
                     `;
                 });
-                $('#product-list').html(filas);
+                $('#product-list').html(filas); 
             },
             error: function(error) {
                 console.error('Error al cargar los productos', error);
@@ -77,8 +94,8 @@ $(document).ready(function() {
                 $('#edit-talla').val(producto.talla);
                 $('#edit-condicion').val(producto.condicion);
                 $('#edit-cantidad').val(producto.cantidad);
-                $('#edit-precio-compra').val(producto.precio_compra);
-                $('#edit-precio-venta').val(producto.precio_venta);
+                $('#edit-precio-compra').val(formatearPrecio(producto.precio_compra));  
+                $('#edit-precio-venta').val(formatearPrecio(producto.precio_venta));   
                 $('#edit-fecha-adq').val(producto.fecha_adquisicion);
 
                 $('#editModal').modal('show');
@@ -100,8 +117,8 @@ $(document).ready(function() {
             talla: $('#edit-talla').val(),
             condicion: $('#edit-condicion').val(),
             cantidad: $('#edit-cantidad').val(),
-            precio_compra: $('#edit-precio-compra').val(),
-            precio_venta: $('#edit-precio-venta').val(),
+            precio_compra: limpiarPrecio($('#edit-precio-compra').val()),  
+            precio_venta: limpiarPrecio($('#edit-precio-venta').val()),    
             fecha_adq: $('#edit-fecha-adq').val(),
         };
 
