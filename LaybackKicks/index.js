@@ -22,7 +22,7 @@ app.post('/api/guardar_producto', (req, res) => {
     INSERT INTO productos (marca, modelo, talla, condicion, cantidad, precio_compra, precio_venta, fecha_adquisicion)
     VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
   `;
-  const values = [marca, modelo, talla, condicion, cantidad, precio_compra, precio_venta, fecha_adq];
+  const values = [marca, modelo, talla, condicion, cantidad, cantidad, precio_compra, precio_venta, fecha_adq];
 
   pool.query(query, values, (err, result) => {
     if (err) {
@@ -34,6 +34,7 @@ app.post('/api/guardar_producto', (req, res) => {
   });
 });
 
+// Obtener todos los productos
 app.get('/api/productos', (req, res) => {
   const query = 'SELECT * FROM productos';
 
@@ -47,6 +48,7 @@ app.get('/api/productos', (req, res) => {
   });
 });
 
+// Obtener un producto por ID
 app.get('/api/productos/:id', (req, res) => {
   const { id } = req.params;
   const query = 'SELECT * FROM productos WHERE id_producto = $1';
@@ -63,26 +65,38 @@ app.get('/api/productos/:id', (req, res) => {
   });
 });
 
+// Ruta para actualizar un producto (PUT)
 app.put('/api/productos/:id', (req, res) => {
-  const { id } = req.params;
+  const idProducto = parseInt(req.params.id, 10);  // Convertimos a entero
   const { marca, modelo, talla, condicion, cantidad, precio_compra, precio_venta, fecha_adq } = req.body;
 
+  if (isNaN(idProducto)) {
+    return res.status(400).json({ message: 'ID de producto no válido' });
+  }
+
   const query = `
-    UPDATE productos SET marca = $1, modelo = $2, talla = $3, condicion = $4, cantidad = $5, 
-    precio_compra = $6, precio_venta = $7, fecha_adquisicion = $8 WHERE id_producto = $9
+    UPDATE productos 
+    SET marca = $1, modelo = $2, talla = $3, condicion = $4, cantidad = $5, precio_compra = $6, precio_venta = $7, fecha_adquisicion = $8
+    WHERE id_producto = $9 RETURNING *
   `;
-  const values = [marca, modelo, talla, condicion, cantidad, precio_compra, precio_venta, fecha_adq, id];
+
+  const values = [marca, modelo, talla, condicion, cantidad, precio_compra, precio_venta, fecha_adq, idProducto];
 
   pool.query(query, values, (err, result) => {
     if (err) {
-      console.error('Error al actualizar producto:', err);
-      res.status(500).json({ message: 'Error al actualizar el producto' });
-    } else {
-      res.status(200).json({ message: 'Producto actualizado exitosamente' });
+      console.error('Error al actualizar el producto:', err);
+      return res.status(500).json({ message: 'Error al actualizar el producto' });
     }
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({ message: 'Producto no encontrado' });
+    }
+
+    res.status(200).json(result.rows[0]);
   });
 });
 
+// Eliminar producto
 app.delete('/api/productos/:id', (req, res) => {
   const { id } = req.params;
   const query = 'DELETE FROM productos WHERE id_producto = $1';
@@ -99,10 +113,12 @@ app.delete('/api/productos/:id', (req, res) => {
   });
 });
 
+// Ruta del Dashboard para obtener los datos
 app.get('/api/dashboard', (req, res) => {
-  const query = 'SELECT precio_compra, precio_venta, cantidad FROM productos';
+  const queryProductos = 'SELECT precio_compra, precio_venta, cantidad FROM productos';
+  const queryVentas = 'SELECT SUM(precio_final) AS totalVentas FROM venta';  
 
-  pool.query(query, (err, productos) => {
+  pool.query(queryProductos, (err, productos) => {
     if (err) {
       console.error('Error al obtener los datos del dashboard:', err);
       res.status(500).json({ message: 'Error al obtener los datos del dashboard' });
@@ -115,31 +131,20 @@ app.get('/api/dashboard', (req, res) => {
         posibleRetorno += producto.precio_venta * producto.cantidad;
       });
 
-      res.json({ montoInvertido, posibleRetorno });
+      pool.query(queryVentas, (err, ventasResult) => {
+        if (err) {
+          console.error('Error al obtener el total de ventas:', err);
+          res.status(500).json({ message: 'Error al obtener el total de ventas' });
+        } else {
+          const totalVentas = ventasResult.rows[0].totalventas || 0;  
+          res.json({ montoInvertido, posibleRetorno, totalVentas });  
+        }
+      });
     }
   });
 });
 
-app.post('/login', (req, res) => {
-  const { username, password } = req.body;
-  console.log('Intentando iniciar sesión con:', { username, password });
-
-  const query = 'SELECT * FROM usuario WHERE email = $1 AND contrasena = $2';
-  
-  pool.query(query, [username, password], (err, results) => {
-    if (err) {
-      console.error('Error al verificar credenciales:', err);
-      res.status(500).json({ message: 'Error al verificar las credenciales' });
-    } else if (results.rows.length > 0) {
-      console.log('Inicio de sesión exitoso:', results.rows);
-      res.json({ message: 'Inicio de sesión exitoso' });
-    } else {
-      console.warn('Credenciales inválidas');
-      res.status(401).json({ message: 'Correo electrónico o contraseña incorrectos' });
-    }
-  });
-});
-
+// Registrar venta
 app.put('/api/vender_producto/:id', async (req, res) => {
   const idProducto = parseInt(req.params.id); 
   const { fecha_venta, precio_final, cantidad_venta } = req.body;

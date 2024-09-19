@@ -30,6 +30,7 @@ CREATE TABLE Productos (
     fecha_adquisicion TIMESTAMP,
     cantidad INT
     vendido BOOLEAN DEFAULT FALSE
+    cantidad_original INT
 );
 CREATE TABLE Proveedores (
     id_proveedores SERIAL PRIMARY KEY,
@@ -57,3 +58,24 @@ INSERT DE ALGUN USUARIO
 
 INSERT INTO Usuario (email, contraseña)
 VALUES ('ej@correo.com', '123456');
+
+-----------------------------------------------------------------------------
+
+TRIGGER 
+
+CREATE OR REPLACE FUNCTION copiar_cantidad_a_original()
+RETURNS TRIGGER AS $$
+BEGIN
+  -- Si el valor de "cantidad_original" es NULL, le asignamos el valor de "cantidad"
+  IF NEW.cantidad_original IS NULL THEN
+    NEW.cantidad_original := NEW.cantidad;
+  END IF;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE TRIGGER set_cantidad_original
+BEFORE INSERT ON productos
+FOR EACH ROW
+EXECUTE FUNCTION copiar_cantidad_a_original();
