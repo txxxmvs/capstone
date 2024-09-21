@@ -13,23 +13,29 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
 });
 
+// Guardar un nuevo producto
 app.post('/api/guardar_producto', (req, res) => {
   const { marca, modelo, talla, condicion, cantidad, precio_compra, precio_venta, fecha_adq } = req.body;
 
-   console.log('Valores recibidos:', { marca, modelo, talla, condicion, cantidad, precio_compra, precio_venta, fecha_adq });
+  console.log('Valores recibidos:', { marca, modelo, talla, condicion, cantidad, precio_compra, precio_venta, fecha_adq });
+
+  // Verifica si todos los valores requeridos están presentes
+  if (!marca || !modelo || !talla || !condicion || !cantidad || !precio_compra || !precio_venta || !fecha_adq) {
+    return res.status(400).json({ message: 'Por favor, completa todos los campos' });
+  }
 
   const query = `
-    INSERT INTO productos (marca, modelo, talla, condicion, cantidad, precio_compra, precio_venta, fecha_adquisicion)
-    VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+    INSERT INTO productos (marca, modelo, talla, condicion, cantidad, cantidad_original, precio_compra, precio_venta, fecha_adquisicion)
+    VALUES ($1, $2, $3, $4, $5, $5, $6, $7, $8) RETURNING *
   `;
-  const values = [marca, modelo, talla, condicion, cantidad, cantidad, precio_compra, precio_venta, fecha_adq];
+  const values = [marca, modelo, talla, condicion, cantidad, precio_compra, precio_venta, fecha_adq];
 
   pool.query(query, values, (err, result) => {
     if (err) {
       console.error('Error al insertar producto:', err);
       res.status(500).json({ message: 'Error al guardar el producto' });
     } else {
-      res.status(200).json({ message: 'Producto guardado exitosamente' });
+      res.status(200).json({ message: 'Producto guardado exitosamente', producto: result.rows[0] });
     }
   });
 });
@@ -113,12 +119,26 @@ app.delete('/api/productos/:id', (req, res) => {
   });
 });
 
-// Ruta del Dashboard para obtener los datos
+// Ruta del Dashboard para obtener los datos filtrados por mes y año
 app.get('/api/dashboard', (req, res) => {
-  const queryProductos = 'SELECT precio_compra, precio_venta, cantidad FROM productos';
-  const queryVentas = 'SELECT SUM(precio_final) AS totalVentas FROM venta';  
+  const { mes, año } = req.query;  // Obtenemos mes y año de la URL
 
-  pool.query(queryProductos, (err, productos) => {
+  const queryProductos = `
+    SELECT precio_compra, precio_venta, cantidad 
+    FROM productos
+    WHERE EXTRACT(MONTH FROM fecha_adquisicion) = $1 
+    AND EXTRACT(YEAR FROM fecha_adquisicion) = $2
+  `;
+
+  const queryVentas = `
+    SELECT SUM(precio_final) AS totalVentas 
+    FROM venta 
+    WHERE EXTRACT(MONTH FROM fecha_venta) = $1 
+    AND EXTRACT(YEAR FROM fecha_venta) = $2
+  `;
+
+  // Ejecutamos la consulta de productos
+  pool.query(queryProductos, [mes, año], (err, productos) => {
     if (err) {
       console.error('Error al obtener los datos del dashboard:', err);
       res.status(500).json({ message: 'Error al obtener los datos del dashboard' });
@@ -131,7 +151,8 @@ app.get('/api/dashboard', (req, res) => {
         posibleRetorno += producto.precio_venta * producto.cantidad;
       });
 
-      pool.query(queryVentas, (err, ventasResult) => {
+      // Ejecutamos la consulta de ventas
+      pool.query(queryVentas, [mes, año], (err, ventasResult) => {
         if (err) {
           console.error('Error al obtener el total de ventas:', err);
           res.status(500).json({ message: 'Error al obtener el total de ventas' });
@@ -186,6 +207,27 @@ app.put('/api/vender_producto/:id', async (req, res) => {
   } finally {
     client.release();
   }
+});
+
+// Ruta para login
+app.post('/login', (req, res) => {
+  const { username, password } = req.body;
+  console.log('Intentando iniciar sesión con:', { username, password });
+
+  const query = 'SELECT * FROM usuario WHERE email = $1 AND contrasena = $2';
+
+  pool.query(query, [username, password], (err, results) => {
+    if (err) {
+      console.error('Error al verificar credenciales:', err);
+      res.status(500).json({ message: 'Error al verificar las credenciales' });
+    } else if (results.rows.length > 0) {
+      console.log('Inicio de sesión exitoso:', results.rows);
+      res.json({ message: 'Inicio de sesión exitoso' });
+    } else {
+      console.warn('Credenciales inválidas');
+      res.status(401).json({ message: 'Correo electrónico o contraseña incorrectos' });
+    }
+  });
 });
 
 app.listen(port, () => {

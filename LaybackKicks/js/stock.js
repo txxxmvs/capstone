@@ -55,18 +55,33 @@ $(document).ready(function() {
     // Procesar el formulario de nuevo producto
     $('#nuevo-producto').submit(function(e) {
         e.preventDefault();
-        
+    
+        // Validar que todos los campos estén completos
+        const marca = $('#marca').val().trim();
+        const modelo = $('#modelo').val().trim();
+        const talla = $('#talla').val().trim();
+        const condicion = $('#condicion').val().trim();
+        const cantidad = $('#cantidad').val().trim();
+        const precio_compra = limpiarPrecio($('#precio-compra').val().trim());
+        const precio_venta = limpiarPrecio($('#precio-venta').val().trim());
+        const fecha_adq = $('#fecha-adq').val().trim();
+    
+        if (!marca || !modelo || !talla || !condicion || !cantidad || !precio_compra || !precio_venta || !fecha_adq) {
+            alert('Por favor, completa todos los campos.');
+            return;
+        }
+    
         const nuevoProducto = {
-            marca: $('#marca').val(),
-            modelo: $('#modelo').val(),
-            talla: $('#talla').val(),
-            condicion: $('#condicion').val(),
-            cantidad: $('#cantidad').val(),
-            precio_compra: limpiarPrecio($('#precio-compra').val()), 
-            precio_venta: limpiarPrecio($('#precio-venta').val()),    
-            fecha_adq: $('#fecha-adq').val(),
+            marca: marca,
+            modelo: modelo,
+            talla: talla,
+            condicion: condicion,
+            cantidad: cantidad,
+            precio_compra: precio_compra,
+            precio_venta: precio_venta,
+            fecha_adq: fecha_adq,
         };
-
+    
         $.ajax({
             url: 'http://localhost:3000/api/guardar_producto',
             method: 'POST',

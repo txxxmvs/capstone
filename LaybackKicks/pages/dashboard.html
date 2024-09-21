@@ -12,13 +12,40 @@
 
     <div class="container mt-5">
         <h2>Dashboard</h2>
-    
+        <div class="row mt-3 mb-4">
+            <div class="col-md-3">
+                <label for="month-select" class="form-label">Mes</label>
+                <select id="month-select" class="form-select form-select-sm">
+                    <option value="1">Enero</option>
+                    <option value="2">Febrero</option>
+                    <option value="3">Marzo</option>
+                    <option value="4">Abril</option>
+                    <option value="5">Mayo</option>
+                    <option value="6">Junio</option>
+                    <option value="7">Julio</option>
+                    <option value="8">Agosto</option>
+                    <option value="9">Septiembre</option>
+                    <option value="10">Octubre</option>
+                    <option value="11">Noviembre</option>
+                    <option value="12">Diciembre</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label for="year-select" class="form-label">Año</label>
+                <select id="year-select" class="form-select form-select-sm">
+                </select>
+            </div>
+            <div class="col-md-2 d-flex align-items-end">
+                <button id="filter-button" class="btn btn-primary btn-sm">Filtrar</button>
+            </div>
+        </div>                
+        
         <div class="row">
             <div class="col-md-4">
                 <div class="card text-white bg-primary mb-3">
                     <div class="card-header">Monto Invertido en Sneakers</div>
                     <div class="card-body">
-                        <h3 class="card-title">$<span id="monto-invertido">0</span></h3>
+                        <h3 class="card-title"><span id="monto-invertido">0</span></h3>
                     </div>
                 </div>
             </div>
@@ -26,7 +53,7 @@
                 <div class="card text-white bg-success mb-3">
                     <div class="card-header">Posible Retorno</div>
                     <div class="card-body">
-                        <h3 class="card-title">$<span id="posible-retorno">0</span></h3>
+                        <h3 class="card-title"><span id="posible-retorno">0</span></h3>
                     </div>
                 </div>
             </div>
@@ -34,12 +61,13 @@
                 <div class="card text-white bg-warning mb-3">
                     <div class="card-header">Total de Ventas</div>
                     <div class="card-body">
-                        <h3 class="card-title">$<span id="total-ventas">0</span></h3>
+                        <h3 class="card-title"><span id="total-ventas">0</span></h3>
                     </div>
                 </div>
             </div>
         </div>
-    </div>    
+    </div> 
+       
 
 <!-- API de StockX -->
         <div class="row">
