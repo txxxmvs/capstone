@@ -1,0 +1,200 @@
+/* Colores de la paleta */
+:root {
+    --color-principal: #1e3a8a; /* Azul oscuro */
+    --color-secundario: #3b82f6; /* Azul claro */
+    --color-acento: #ffffff;     /* Blanco */
+    --color-fondo: #f1f5f9;     /* Gris claro */
+    --color-texto: #111827;     /* Negro intenso */
+    --color-hover: #2563eb;     /* Azul de hover */
+}
+
+/* Estilos generales */
+/* Imagen de fondo */
+body {
+    font-family: 'Arial', sans-serif;
+    background-image: url('../img/fondo1.jpeg'); /* Reemplaza el nombre por la ruta correcta de la imagen */
+    background-size: cover; /* La imagen cubrirá todo el fondo */
+    background-position: center center; /* Centrar la imagen */
+    background-attachment: fixed; /* Mantener la imagen fija al hacer scroll */
+    margin: 0;
+    padding: 0;
+    color: var(--color-texto);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+h2 {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--color-acento); /* Cambia a un color más visible */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); /* Añadir sombra para mayor visibilidad */
+}
+
+#reportes-section h2 {
+    color: var(--color-texto); /* Cambia el color a uno adecuado, como el color de texto principal */
+}
+
+
+/* Estilos para la selección de Mes y Año */
+label.form-label, #month-select, #year-select {
+    color: var(--color-acento); /* Cambiar a blanco */
+}
+
+/* Ajuste del ancho del cuadro inferior (sección StockX) */
+#stockx-section .card {
+    max-width: 800px; /* Limitar el ancho del cuadro */
+    margin: 0 auto; /* Centrar el cuadro */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
+
+.card {
+    max-width: 800px;
+    margin: 0 auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Navbar styles */
+/* Estilos de la barra de navegación */
+nav.navbar {
+    background-color: #111827 !important; /* Color de fondo oscuro (casi negro) */
+    padding: 15px 20px !important; /* Mayor padding para hacerlo más grande */
+    font-size: 18px !important; /* Aumentar el tamaño del texto */
+}
+
+nav.navbar .navbar-brand {
+    font-size: 24px !important; /* Aumentar tamaño del logo/texto principal */
+    color: var(--color-acento) !important; /* Mantener el texto del logo en blanco */
+}
+
+nav.navbar .nav-link {
+    color: var(--color-acento) !important; /* Texto blanco para visibilidad */
+    padding: 10px 15px !important; /* Aumentar el tamaño de los enlaces */
+}
+
+nav.navbar .nav-link:hover {
+    background-color: #2563eb !important; /* Color azul hover */
+    color: var(--color-acento) !important; /* Mantener el color del texto en blanco */
+    border-radius: 5px !important;
+}
+
+nav.navbar .nav-link.active {
+    background-color: var(--color-secundario) !important; /* Azul claro */
+    color: var(--color-acento) !important; /* Texto blanco */
+    border-radius: 5px !important;
+}
+
+/* Stock section styles */
+/* Estilos para la sección de Stock */
+/* Stock section styles */
+/* Estilos para la sección de Stock */
+/* Stock section styles */
+/* Estilos para la sección de Stock */
+.section-box {
+    background-color: #ffffff; /* Fondo blanco */
+    padding: 20px;
+    border-radius: 10px; /* Bordes redondeados */
+    border: 1px solid #ccc; /* Borde más claro */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra */
+    margin-bottom: 20px;
+    overflow: hidden; /* Evitar desbordamiento */
+    height: 100%; /* Asegurar que el cuadro se extienda a la altura completa */
+}
+
+/* Estilos para los botones de acciones en columna */
+.table td .btn {
+    display: block; /* Forzar que los botones sean bloques */
+    width: 100%; /* Hacer que ocupen todo el ancho de la celda */
+    margin-bottom: 5px; /* Espaciado entre los botones */
+}
+
+.table td .btn:last-child {
+    margin-bottom: 0; /* Quitar el margen inferior del último botón */
+}
+
+
+/* Asegurar que la tabla no se salga del cuadro */
+#stock-section {
+    width: 100%;
+    overflow-x: auto; /* Scroll horizontal si es necesario */
+}
+
+.table {
+    width: 100%; /* Asegurar que la tabla ocupe todo el ancho del contenedor */
+}
+
+
+#form-section {
+    width: 100%;
+    overflow: hidden; /* Evitar desbordamiento */
+}
+/* Limpiar floats */
+.clearfix::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+/* Form section styles */
+/* Estilos del formulario */
+.form-section label, .form-section input, .form-section select {
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.table-section {
+    width: 100%;
+}
+
+/* Button styles */
+/* Estilos de los botones */
+.btn-primary {
+    background-color: var(--color-secundario) !important; /* Azul claro */
+    border-color: var(--color-secundario) !important;
+    font-weight: bold;
+    padding: 10px 15px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: var(--color-hover) !important; /* Azul hover */
+    border-color: var(--color-hover) !important;
+}
+
+/* Form styles */
+.form-control {
+    border-radius: 5px;
+    border: 1px solid #ced4da;
+}
+
+.form-label {
+    font-weight: bold;
+}
+
+/* Table styles */
+/* Estilos de la tabla */
+.table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+}
+
+.table th, .table td {
+    padding: 10px;
+    text-align: left;
+}
+
+.table th {
+    background-color: var(--color-principal); /* Azul oscuro */
+    color: var(--color-acento); /* Texto blanco */
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: #f9f9f9; /* Fila alternada clara */
+}

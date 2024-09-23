@@ -12,8 +12,8 @@
 
     <div class="container mt-5">
         <h2>Stock</h2>
-        <div class="row">
-            <div class="col-md-8">
+        <div class="row clearfix">
+            <div id="stock-section" class="col-md-8 section-box">
                 <table class="table table-striped">
                     <thead>
                         <tr>
@@ -32,7 +32,7 @@
                     </tbody>
                 </table>
             </div>
-            <div class="col-md-4">
+            <div id="form-section" class="col-md-4 section-box">
                 <h4>Agrega un Nuevo Producto</h4>
                 <form id="nuevo-producto">
                     <div class="mb-3">
@@ -75,8 +75,6 @@
             </div>
         </div>
     </div>
-
-
     <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
