@@ -11,32 +11,34 @@
     <div id="navbar-placeholder"></div>
     
     <div class="container mt-5">
-        <h2>Generar Reportes</h2>
-        <form id="report-form" class="row g-3"> 
-            <div class="col-md-6"> 
-                <label for="tipo-reporte" class="form-label">Tipo de Reporte</label>
-                <select class="form-select" id="tipo-reporte" required>
-                    <option value="todos">Todos los productos</option>
-                    <option value="vendidos">Vendidos</option>
-                    <option value="no-vendidos">No vendidos</option>
-                </select>
-            </div>
-            <div class="col-md-6"> 
-                <label for="periodo" class="form-label">Periodo</label>
-                <select class="form-select" id="periodo" required>
-                    <option value="mensual">Último Mes</option>
-                    <option value="3meses">Últimos 3 Meses</option>
-                    <option value="6meses">Últimos 6 Meses</option>
-                    <option value="anual">Último Año</option>
-                </select>
-            </div>
-            <div class="col-12"> 
-                <button type="submit" id="download-pdf" class="btn btn-secondary w-45">Generar y Descargar PDF</button>
-            </div>
-        </form>
-
-        <div id="report-result" class="mt-4"></div>
+        
+            <h2>Generar Reportes</h2>
+            <div class="section-box">
+            <form id="report-form" class="row g-3">
+                <div class="col-md-6">
+                    <label for="tipo-reporte" class="form-label">Tipo de Reporte</label>
+                    <select class="form-select" id="tipo-reporte" required>
+                        <option value="todos">Todos los productos</option>
+                        <option value="vendidos">Vendidos</option>
+                        <option value="no-vendidos">No vendidos</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label for="periodo" class="form-label">Periodo</label>
+                    <select class="form-select" id="periodo" required>
+                        <option value="mensual">Último Mes</option>
+                        <option value="3meses">Últimos 3 Meses</option>
+                        <option value="6meses">Últimos 6 Meses</option>
+                        <option value="anual">Último Año</option>
+                    </select>
+                </div>
+                <div class="col-md-12">
+                    <button type="submit" class="btn btn-primary">Generar y Descargar PDF</button>
+                </div>
+            </form>
+        </div>
     </div>
+    
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="../js/reportes.js"></script>
