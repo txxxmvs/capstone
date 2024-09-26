@@ -1,23 +1,24 @@
 /* Colores de la paleta */
 :root {
-    --color-principal: #1e3a8a; /* Azul oscuro */
-    --color-secundario: #3b82f6; /* Azul claro */
-    --color-acento: #ffffff;     /* Blanco */
-    --color-fondo: #f1f5f9;     /* Gris claro */
-    --color-texto: #111827;     /* Negro intenso */
-    --color-hover: #2563eb;     /* Azul de hover */
+    --color-principal: #1e3a8a; 
+    --color-secundario: #3b82f6;
+    --color-acento: #ffffff;     
+    --color-fondo: #f1f5f9;     
+    --color-texto: #111827;     
+    --color-hover: #2563eb;     
 }
 
-/* Estilos generales */
 body {
     font-family: 'Arial', sans-serif;
-    background-image: url('../img/fondo1.jpeg'); /* Reemplaza el nombre por la ruta correcta de la imagen */
-    background-size: cover; /* La imagen cubrirá todo el fondo */
-    background-position: center center; /* Centrar la imagen */
-    background-attachment: fixed; /* Mantener la imagen fija al hacer scroll */
+    background-image: url('../img/fondo.png'); 
+    background-size: contain; 
+    background-repeat: no-repeat; 
+    background-color: #20225B; 
+    background-position: center center; 
+    background-attachment: fixed; 
     margin: 0;
     padding: 0;
-    color: var(--color-texto); /* Negro intenso */
+    color: var(--color-texto); 
 }
 
 .container {
@@ -29,25 +30,26 @@ body {
 h2 {
     font-size: 2rem;
     font-weight: bold;
-    color: var(--color-acento); /* Blanco */
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); /* Añadir sombra */
+    color: var(--color-acento); 
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); 
 }
 
-/* Cambiar color del texto en formularios a negro */
+
 .form-section label, .form-section input, .form-section select, .form-control {
-    color: var(--color-texto) !important; /* Negro intenso */
-    background-color: #fff !important; /* Fondo blanco para campos */
+    color: var(--color-texto) !important; 
+    background-color: #fff !important; 
 }
 
 .form-control::placeholder {
-    color: #6c757d; /* Color de los placeholders */
+    color: #6c757d; 
 }
 
 /* Navbar styles */
 nav.navbar {
-    background-color: #111827 !important; /* Color de fondo oscuro */
+    background-color: #20225B !important; 
     padding: 15px 20px !important;
     font-size: 18px !important;
+    border-bottom: 2px solid #111827;
 }
 
 nav.navbar .navbar-brand {
@@ -70,6 +72,13 @@ nav.navbar .nav-link.active {
     background-color: var(--color-secundario) !important;
     color: var(--color-acento) !important;
     border-radius: 5px !important;
+}
+
+.logo-navbar {
+    height: 65px; 
+    width: auto;
+    margin-left: auto; 
+    display: block;
 }
 
 /* Sección de formularios */
@@ -102,12 +111,10 @@ nav.navbar .nav-link.active {
 .table th, .table td {
     padding: 10px;
     text-align: left;
-    color: var(--color-texto); /* Negro intenso */
+    color: var(--color-texto); 
 }
 
 .table th {
     background-color: var(--color-principal);
     color: var(--color-acento);
 }
-
-

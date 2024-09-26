@@ -79,3 +79,19 @@ CREATE TRIGGER set_cantidad_original
 BEFORE INSERT ON productos
 FOR EACH ROW
 EXECUTE FUNCTION copiar_cantidad_a_original();
+
+
+-----------------------------------------------------------------------------
+
+NUEVA COLUMA USUARIO
+
+ALTER TABLE usuario
+ADD COLUMN rol VARCHAR(50) NOT NULL DEFAULT 'vendedor';
+
+ACTUALIZA EL QUE YA ESTA
+
+UPDATE usuario
+SET rol = 'admin'
+WHERE id_usuario = 1;
+-----------------------------------------------------------------------------
+

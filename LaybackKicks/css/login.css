@@ -1,0 +1,43 @@
+/* Colores de la paleta */
+:root {
+    --color-principal: #1e3a8a; 
+    --color-secundario: #3b82f6;
+    --color-acento: #ffffff;     
+    --color-fondo: #f1f5f9;     
+    --color-texto: #111827;     
+    --color-hover: #2563eb;   
+}
+
+/* Centrado completo de la página */
+html, body {
+    height: 100%;
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    background-image: url('../img/fondo.png'); 
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-color: #20225B;
+    background-position: center center;
+    background-attachment: fixed;
+    color: var(--color-texto); 
+}
+
+.container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    max-width: 1200px; 
+    padding: 20px;
+}
+
+/* Cuadro de login con traslucidez */
+.card {
+    background-color: rgba(0, 0, 0, 0.6); 
+}
+
+/* Ajuste del color del texto */
+.card-header h4, .form-label {
+    color: white; 
+}
