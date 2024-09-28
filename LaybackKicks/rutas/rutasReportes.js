@@ -1,7 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const controladorReportes = require('../controladores/controladorReportes');
+const { generarReporte, generarPDF } = require('../controladores/controladorReporte');
 
-router.get('/:tipo', controladorReportes.generarReporte);
+// Ruta para generar reportes con filtros
+router.get('/:tipo', generarReporte);
+
+// Ruta para generar PDF a partir de HTML
+router.post('/generar-pdf', generarPDF);
 
 module.exports = router;

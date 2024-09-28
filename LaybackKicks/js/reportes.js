@@ -8,7 +8,7 @@ document.getElementById('report-form').addEventListener('submit', function(event
     .then(response => response.json())
     .then(data => {
       let htmlContent = `<table class="table table-striped"><thead><tr>`;
-      
+
       if (tipoReporte === 'vendidos') {
         htmlContent += `<th>ID Venta</th><th>ID Usuario</th><th>ID Producto</th><th>Fecha Venta</th><th>Cantidad</th><th>Precio Venta Real</th><th>Precio Compra</th><th>Fecha de Compra</th>`;
       } else {
@@ -32,22 +32,22 @@ document.getElementById('report-form').addEventListener('submit', function(event
       const month = currentDate.toLocaleString('default', { month: 'long' });
       const year = currentDate.getFullYear();
 
-      fetch('http://localhost:3000/api/generar-pdf', {
+      fetch('http://localhost:3000/api/reportes/generar-pdf', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+            'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          html: htmlContent,
-          fileName: `${tipoReporte}_${month}_${year}.pdf` 
+            html: htmlContent,
+            nombreArchivo: `${tipoReporte}_${month}_${year}.pdf`
         })
-      })
+      })    
       .then(response => response.blob())
       .then(blob => {
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `${tipoReporte}_${month}_${year}.pdf`; 
+        a.download = `${tipoReporte}_${month}_${year}.pdf`;
         document.body.appendChild(a);
         a.click();
         a.remove();
