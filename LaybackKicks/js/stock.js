@@ -83,7 +83,7 @@ $(document).ready(function() {
         };
     
         $.ajax({
-            url: 'http://localhost:3000/api/guardar_producto',
+            url: 'http://localhost:3000/api/productos',
             method: 'POST',
             contentType: 'application/json',
             data: JSON.stringify(nuevoProducto),
@@ -129,8 +129,8 @@ $(document).ready(function() {
         }
 
         $.ajax({
-            url: `http://localhost:3000/api/vender_producto/${idProducto}`, 
-            method: 'PUT',
+            url: `http://localhost:3000/api/ventas/registrar/${idProducto}`, 
+            method: 'POST',
             contentType: 'application/json',
             data: JSON.stringify({
                 fecha_venta: fechaVenta,
