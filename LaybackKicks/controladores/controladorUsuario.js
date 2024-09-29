@@ -1,4 +1,5 @@
 const pool = require('../bd/bd');
+const nodemailer = require('nodemailer');
 
 // Función para verificar si el email ya existe en la base de datos
 const verificarEmailDuplicado = (email, callback) => {
@@ -7,7 +8,7 @@ const verificarEmailDuplicado = (email, callback) => {
             console.error('Error al verificar el email:', err);
             callback(err, null);
         } else {
-            callback(null, result.rows.length > 0);  // Retorna true si el email ya existe
+            callback(null, result.rows.length > 0); 
         }
     });
 };
@@ -64,20 +65,6 @@ const insertarUsuario = (req, res) => {
     });
 };
 
-// Actualizar usuario
-const actualizarUsuario = (req, res) => {
-    const { id } = req.params;
-    const { email, contrasena, rol } = req.body;
-    pool.query('UPDATE usuario SET email = $1, contrasena = $2, rol = $3 WHERE id_usuario = $4', [email, contrasena, rol, id], (err) => {
-        if (err) {
-            console.error('Error al actualizar usuario:', err);
-            res.status(500).json({ message: 'Error al actualizar usuario' });
-        } else {
-            res.json({ message: 'Usuario actualizado con éxito' });
-        }
-    });
-};
-
 // Eliminar usuario
 const eliminarUsuario = (req, res) => {
     const { id } = req.params;
@@ -91,10 +78,43 @@ const eliminarUsuario = (req, res) => {
     });
 };
 
+// Actualizar solo el rol del usuario
+const actualizarUsuario = (req, res) => {
+    const { id } = req.params;
+    const { rol } = req.body;
+
+    if (!rol) {
+        return res.status(400).json({ message: 'El rol es requerido' });
+    }
+
+    pool.query('UPDATE usuario SET rol = $1 WHERE id_usuario = $2', [rol, id], (err) => {
+        if (err) {
+            console.error('Error al actualizar rol del usuario:', err);
+            res.status(500).json({ message: 'Error al actualizar el rol del usuario' });
+        } else {
+            res.json({ message: 'Rol del usuario actualizado con éxito' });
+        }
+    });
+};
+
+// Actualizar solo la contraseña del usuario
+const cambiarContrasena = (req, res) => {
+    const { id } = req.params;
+    const { nuevaContrasena } = req.body;
+
+    pool.query('UPDATE usuario SET contrasena = $1 WHERE id_usuario = $2', [nuevaContrasena, id], (err, result) => {
+        if (err) {
+            return res.status(500).json({ message: 'Error al cambiar la contraseña' });
+        }
+        res.json({ message: 'Contraseña actualizada correctamente' });
+    });
+};
+
 module.exports = {
     obtenerUsuarios,
     obtenerUsuarioPorId,
     insertarUsuario,
     actualizarUsuario,
-    eliminarUsuario
+    eliminarUsuario,
+    cambiarContrasena
 };

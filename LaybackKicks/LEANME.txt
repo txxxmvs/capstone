@@ -6,6 +6,8 @@ psql -U postgres -d laybackkicks -h localhost
 net start | findstr /I "postgresql"
 npm install pg
 net start postgresql-x64-16
+npm install nodemailer
+npm install html-pdf 
 
 ----------------------------------------------------------------
 

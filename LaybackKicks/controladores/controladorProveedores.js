@@ -57,8 +57,8 @@ const obtenerProveedorPorId = (req, res) => {
 const insertarProveedor = async (req, res) => {
     const { nombre, email, telefono, productos_id_producto } = req.body;
     try {
-        await verificarProducto(productos_id_producto); // Verifica si el producto existe
-        await verificarProductoDuplicado(productos_id_producto); // Verifica que no se repita el producto
+        await verificarProducto(productos_id_producto);
+        await verificarProductoDuplicado(productos_id_producto); 
         pool.query('INSERT INTO proveedores (nombre, email, telefono, productos_id_producto) VALUES ($1, $2, $3, $4)', [nombre, email, telefono, productos_id_producto], (err) => {
             if (err) {
                 console.error('Error al insertar proveedor:', err);
@@ -77,8 +77,8 @@ const actualizarProveedor = async (req, res) => {
     const { id } = req.params;
     const { nombre, email, telefono, productos_id_producto } = req.body;
     try {
-        await verificarProducto(productos_id_producto); // Verifica si el producto existe
-        await verificarProductoDuplicado(productos_id_producto); // Verifica que no se repita el producto
+        await verificarProducto(productos_id_producto); 
+        await verificarProductoDuplicado(productos_id_producto); 
         pool.query('UPDATE proveedores SET nombre = $1, email = $2, telefono = $3, productos_id_producto = $4 WHERE id_proveedores = $5', [nombre, email, telefono, productos_id_producto, id], (err) => {
             if (err) {
                 console.error('Error al actualizar proveedor:', err);

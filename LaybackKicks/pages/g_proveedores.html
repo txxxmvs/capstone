@@ -13,22 +13,22 @@
         <h2 class="text-center">Gestionar Proveedores</h2>
         <div class="section-box">
             <form id="proveedor-form" class="row g-3">
-                <input type="hidden" id="id_proveedor"> <!-- Campo oculto para la ID -->
+                <input type="hidden" id="id_proveedor"> 
                 <div class="col-md-6">
                     <label for="nombre" class="form-label">Nombre del Proveedor</label>
-                    <input type="text" class="form-control" id="nombre" required>
+                    <input type="text" class="form-control" id="nombre" placeholder="Nombre"r equired>
                 </div>
                 <div class="col-md-6">
                     <label for="email" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="email" required>
+                    <input type="email" class="form-control" id="email" placeholder="Ej@gmail.com" required>
                 </div>
                 <div class="col-md-6">
                     <label for="telefono" class="form-label">Teléfono</label>
-                    <input type="text" class="form-control" id="telefono" required>
+                    <input type="text" class="form-control" id="telefono" placeholder="+569...." required>
                 </div>
                 <div class="col-md-6">
                     <label for="productos_id_producto" class="form-label">ID del Producto</label>
-                    <input type="number" class="form-control" id="productos_id_producto" required>
+                    <input type="number" class="form-control" id="productos_id_producto" placeholder="Ej: 1" required>
                 </div>
                 <div class="col-12">
                     <button type="submit" class="btn btn-primary w-100">Agregar Proveedor</button>
@@ -50,7 +50,6 @@
                     </tr>
                 </thead>
                 <tbody id="proveedores-list">
-                    <!-- Aquí se llenará con los datos de los proveedores -->
                 </tbody>
             </table>
         </div>

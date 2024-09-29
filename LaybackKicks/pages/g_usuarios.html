@@ -13,20 +13,20 @@
         <h2 class="text-center">Gestionar Usuarios</h2>
         <div class="section-box">
             <form id="usuario-form" class="row g-3">
-                <input type="hidden" id="id_usuario"> <!-- Campo oculto para la ID -->
+                <input type="hidden" id="id_usuario"> 
                 <div class="col-md-6">
                     <label for="email" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="email" required>
+                    <input type="email" class="form-control" id="email" placeholder="Ej@gmail.com" required>
                 </div>
                 <div class="col-md-6">
                     <label for="contrasena" class="form-label">Contraseña</label>
-                    <input type="password" class="form-control" id="contrasena" required>
+                    <input type="password" class="form-control" id="contrasena" placeholder="Contraseña"required>
                 </div>
                 <div class="col-md-6">
                     <label for="rol" class="form-label">Rol</label>
                     <select id="rol" class="form-select" required>
                         <option value="admin">Admin</option>
-                        <option value="user">Usuario</option>
+                        <option value="vendedor">Vendedor</option>
                     </select>
                 </div>
                 <div class="col-12">
@@ -50,6 +50,34 @@
                     <!-- Aquí se llenará con los datos de los usuarios -->
                 </tbody>
             </table>
+        </div>
+    </div>
+
+    <!-- Modal para cambiar contraseña -->
+    <div class="modal fade" id="modalCambiarContrasena" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabel">Cambiar Contraseña</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="nuevaContrasena">Nueva Contraseña</label>
+                            <input type="password" class="form-control" id="nuevaContrasena" placeholder="Ingrese nueva contraseña">
+                        </div>
+                        <div class="form-group">
+                            <label for="repetirContrasena">Repetir Contraseña</label>
+                            <input type="password" class="form-control" id="repetirContrasena" placeholder="Repita la nueva contraseña">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="confirmarCambioContrasena">Cambiar Contraseña</button>
+                </div>
+            </div>
         </div>
     </div>
 

@@ -1,32 +1,70 @@
-$(document).ready(function() {
+$(document).ready(function () {
     cargarUsuarios();
 
     function cargarUsuarios() {
         $.ajax({
             url: 'http://localhost:3000/api/usuarios',
             method: 'GET',
-            success: function(usuarios) {
+            success: function (usuarios) {
                 let filas = '';
-                usuarios.forEach(function(usuario) {
+                usuarios.forEach(function (usuario) {
                     filas += `
                         <tr>
                             <td>${usuario.id_usuario}</td>
                             <td>${usuario.email}</td>
                             <td>${usuario.rol}</td>
                             <td>
-                                <button class="btn btn-warning btn-sm editar" data-id="${usuario.id_usuario}">Enviar Correo</button>
+                                <button class="btn btn-warning btn-sm cambiar-contraseña" data-id="${usuario.id_usuario}">Cambiar Contraseña</button>
                                 <button class="btn btn-danger btn-sm eliminar" data-id="${usuario.id_usuario}">Eliminar</button>
+                                <select class="form-select form-select-sm rol-selector" data-id="${usuario.id_usuario}" style="width: auto; display: inline-block;">
+                                    <option value="admin" ${usuario.rol === 'admin' ? 'selected' : ''}>Admin</option>
+                                    <option value="vendedor" ${usuario.rol === 'vendedor' ? 'selected' : ''}>Vendedor</option>
+                                </select>
+                                <button class="btn btn-primary btn-sm guardar-rol" data-id="${usuario.id_usuario}" style="display: inline-block;">Guardar</button>
                             </td>
                         </tr>
                     `;
                 });
                 $('#usuarios-list').html(filas);
             },
-            error: function(error) {
+            error: function (error) {
                 console.error('Error al cargar los usuarios', error);
             }
         });
     }
+
+    // Mostrar modal para cambiar contraseña
+    $(document).on('click', '.cambiar-contraseña', function () {
+        const idUsuario = $(this).data('id');
+        $('#modalCambiarContrasena').modal('show');
+
+        // Configurar el botón de confirmar cambio de contraseña
+        $('#confirmarCambioContrasena').off('click').on('click', function () {
+            const nuevaContrasena = $('#nuevaContrasena').val();
+            const repetirContrasena = $('#repetirContrasena').val();
+
+            // Verificar si las contraseñas coinciden
+            if (nuevaContrasena !== repetirContrasena) {
+                alert('Las contraseñas no coinciden.');
+                return;
+            }
+
+            // Realizar la solicitud para cambiar la contraseña usando la segunda contraseña
+            $.ajax({
+                url: `http://localhost:3000/api/usuarios/cambiar_contrasena/${idUsuario}`,
+                type: 'PUT',
+                contentType: 'application/json',
+                data: JSON.stringify({ nuevaContrasena: repetirContrasena }),
+                success: function (response) {
+                    alert(response.message);
+                    $('#modalCambiarContrasena').modal('hide');
+                },
+                error: function (xhr, status, error) {
+                    alert('Error al cambiar la contraseña.');
+                }
+            });
+        });
+    });
 
     // Función para verificar si el email es válido
     function esEmailValido(email) {
@@ -70,23 +108,6 @@ $(document).ready(function() {
                 } else {
                     alert('Error al agregar el usuario.');
                 }
-            }
-        });
-    });
-
-    // Al hacer clic en el botón de editar, enviar un correo
-    $(document).on('click', '.editar', function() {
-        const idUsuario = $(this).data('id');
-        
-        $.ajax({
-            url: `http://localhost:3000/api/usuarios/${idUsuario}`,
-            method: 'GET',
-            success: function(usuario) {
-                alert(`Se ha enviado un correo a ${usuario.email} para el cambio de contraseña.`);
-            },
-            error: function(error) {
-                alert('Error al cargar los datos del usuario');
-                console.error(error);
             }
         });
     });
