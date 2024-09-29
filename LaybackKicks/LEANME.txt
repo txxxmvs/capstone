@@ -38,7 +38,7 @@ CREATE TABLE Proveedores (
     telefono VARCHAR(20),
     email VARCHAR(45),
     Productos_id_producto INT,
-    FOREIGN KEY (Productos_id_producto) REFERENCES Productos(id_producto)
+    FOREIGN KEY (Productos_id_producto) REFERENCES Productos(id_producto)  // va a tener problemas por proveedores, deben cambiar la foreign key
 );
 CREATE TABLE Venta (
     id_venta SERIAL PRIMARY KEY,
