@@ -34,7 +34,6 @@ h2 {
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); 
 }
 
-
 .form-section label, .form-section input, .form-section select, .form-control {
     color: var(--color-texto) !important; 
     background-color: #fff !important; 
@@ -117,4 +116,84 @@ nav.navbar .nav-link.active {
 .table th {
     background-color: var(--color-principal);
     color: var(--color-acento);
+}
+
+/* Media Queries para dispositivos pequeños */
+
+/* Para pantallas menores a 1024px */
+@media (max-width: 1024px) {
+    .container {
+        max-width: 95%;
+        padding: 15px;
+    }
+
+    /* Ajustar las tarjetas del dashboard */
+    .row .col-md-4 {
+        width: 48%;
+        margin-bottom: 20px;
+    }
+
+    /* Formulario en stock.html */
+    .form-control {
+        font-size: 14px;
+    }
+
+    .section-box {
+        padding: 20px;
+    }
+
+    .btn-primary {
+        padding: 12px;
+        font-size: 15px;
+    }
+}
+
+/* Para pantallas menores a 768px */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px; 
+    }
+
+    /* Ajustar los selects y botones del filtro */
+    .col-md-3, .col-md-2 {
+        width: 100%;
+        margin-bottom: 10px; 
+    }
+
+    /* Ajustar las tarjetas de información */
+    .row .col-md-4 {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    /* Ajustar el input y botón de búsqueda */
+    #stockx-form {
+        flex-direction: column;
+    }
+
+    #stockx-search, #filtrar-button {
+        width: 100%;
+    }
+
+    /* Ajustar el tamaño de los textos */
+    h3.card-title {
+        font-size: 1.2rem; 
+    }
+
+    /* Botón de búsqueda */
+    .btn-primary {
+        width: 100%;
+    }
+
+    /* Ajuste a las tablas */
+    .table th, .table td {
+        font-size: 14px;
+        padding: 8px;
+    }
+
+    /* Ajustar sección de formularios */
+    .section-box {
+        margin: 0 auto;
+        padding: 15px;
+    }
 }
