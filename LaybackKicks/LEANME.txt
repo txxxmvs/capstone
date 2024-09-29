@@ -35,7 +35,7 @@ CREATE TABLE Productos (
 CREATE TABLE Proveedores (
     id_proveedores SERIAL PRIMARY KEY,
     nombre VARCHAR(45) NOT NULL,
-    telefono INT,
+    telefono VARCHAR(20),
     email VARCHAR(45),
     Productos_id_producto INT,
     FOREIGN KEY (Productos_id_producto) REFERENCES Productos(id_producto)

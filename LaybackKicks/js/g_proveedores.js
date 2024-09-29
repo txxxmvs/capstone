@@ -1,6 +1,7 @@
 $(document).ready(function() {
     cargarProveedores();
 
+    // Función para cargar la lista de proveedores
     function cargarProveedores() {
         $.ajax({
             url: 'http://localhost:3000/api/proveedores',
@@ -14,6 +15,7 @@ $(document).ready(function() {
                             <td>${proveedor.nombre}</td>
                             <td>${proveedor.email}</td>
                             <td>${proveedor.telefono}</td>
+                            <td>${proveedor.productos_id_producto}</td> <!-- Mostrar el ID del producto asociado -->
                             <td>
                                 <button class="btn btn-warning btn-sm editar" data-id="${proveedor.id_proveedores}">Editar</button>
                                 <button class="btn btn-danger btn-sm eliminar" data-id="${proveedor.id_proveedores}">Eliminar</button>
@@ -36,13 +38,14 @@ $(document).ready(function() {
         const nombre = $('#nombre').val().trim();
         const email = $('#email').val().trim();
         const telefono = $('#telefono').val().trim();
+        const productos_id_producto = $('#productos_id_producto').val().trim(); // Capturando el ID del producto
 
-        if (!nombre || !email || !telefono) {
+        if (!nombre || !email || !telefono || !productos_id_producto) {
             alert('Por favor, completa todos los campos.');
             return;
         }
 
-        const nuevoProveedor = { nombre, email, telefono };
+        const nuevoProveedor = { nombre, email, telefono, productos_id_producto }; // Enviando el ID del producto
 
         $.ajax({
             url: 'http://localhost:3000/api/proveedores',
@@ -55,7 +58,7 @@ $(document).ready(function() {
                 $('#proveedor-form')[0].reset();
             },
             error: function(error) {
-                alert('Error al agregar el proveedor');
+                alert(error.responseJSON.message || 'Error al agregar el proveedor');
                 console.error(error);
             }
         });
@@ -73,6 +76,7 @@ $(document).ready(function() {
                 $('#edit-nombre').val(proveedor.nombre);
                 $('#edit-email').val(proveedor.email);
                 $('#edit-telefono').val(proveedor.telefono);
+                $('#edit-productos_id_producto').val(proveedor.productos_id_producto);
                 $('#editModal').modal('show');
             },
             error: function(error) {
@@ -91,6 +95,7 @@ $(document).ready(function() {
             nombre: $('#edit-nombre').val(),
             email: $('#edit-email').val(),
             telefono: $('#edit-telefono').val(),
+            productos_id_producto: $('#edit-productos_id_producto').val() // Capturar el ID del producto en la edición
         };
 
         $.ajax({
@@ -104,7 +109,7 @@ $(document).ready(function() {
                 cargarProveedores();
             },
             error: function(error) {
-                alert('Error al actualizar el proveedor');
+                alert(error.responseJSON.message || 'Error al actualizar el proveedor');
                 console.error(error);
             }
         });

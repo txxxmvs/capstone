@@ -3,7 +3,7 @@ $(document).ready(function() {
 
     function cargarUsuarios() {
         $.ajax({
-            url: 'http://localhost:3000/api/usuario',
+            url: 'http://localhost:3000/api/usuarios',
             method: 'GET',
             success: function(usuarios) {
                 let filas = '';
@@ -28,6 +28,12 @@ $(document).ready(function() {
         });
     }
 
+    // Función para verificar si el email es válido
+    function esEmailValido(email) {
+        const regex = /^[^\s@]+@(gmail\.com|hotmail\.com|outlook\.com)$/;
+        return regex.test(email);
+    }    
+
     // Procesar el formulario de nuevo usuario
     $('#usuario-form').submit(function(e) {
         e.preventDefault();
@@ -41,10 +47,15 @@ $(document).ready(function() {
             return;
         }
 
+        if (!esEmailValido(email)) {
+            alert('Por favor, introduce un email válido.');
+            return;
+        }
+
         const nuevoUsuario = { email, contrasena, rol };
 
         $.ajax({
-            url: 'http://localhost:3000/api/usuario',
+            url: 'http://localhost:3000/api/usuarios',
             method: 'POST',
             contentType: 'application/json',
             data: JSON.stringify(nuevoUsuario),
@@ -53,9 +64,12 @@ $(document).ready(function() {
                 cargarUsuarios();
                 $('#usuario-form')[0].reset();
             },
-            error: function(error) {
-                alert('Error al agregar el usuario');
-                console.error(error);
+            error: function(xhr) {
+                if (xhr.status === 400) {
+                    alert('Error: El email ya está registrado.');
+                } else {
+                    alert('Error al agregar el usuario.');
+                }
             }
         });
     });
@@ -65,12 +79,10 @@ $(document).ready(function() {
         const idUsuario = $(this).data('id');
         
         $.ajax({
-            url: `http://localhost:3000/api/usuario/${idUsuario}`,
+            url: `http://localhost:3000/api/usuarios/${idUsuario}`,
             method: 'GET',
             success: function(usuario) {
-                // Lógica para enviar el correo (se simula aquí, debes reemplazar con la lógica de envío de correo)
                 alert(`Se ha enviado un correo a ${usuario.email} para el cambio de contraseña.`);
-                // Aquí puedes realizar la llamada para enviar el correo a través del backend
             },
             error: function(error) {
                 alert('Error al cargar los datos del usuario');
@@ -85,7 +97,7 @@ $(document).ready(function() {
 
         if (confirm('¿Estás seguro de eliminar este usuario?')) {
             $.ajax({
-                url: `http://localhost:3000/api/usuario/${idUsuario}`,
+                url: `http://localhost:3000/api/usuarios/${idUsuario}`,
                 method: 'DELETE',
                 success: function() {
                     alert('Usuario eliminado con éxito');

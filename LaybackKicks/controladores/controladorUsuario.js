@@ -1,5 +1,17 @@
 const pool = require('../bd/bd');
 
+// Función para verificar si el email ya existe en la base de datos
+const verificarEmailDuplicado = (email, callback) => {
+    pool.query('SELECT * FROM usuario WHERE email = $1', [email], (err, result) => {
+        if (err) {
+            console.error('Error al verificar el email:', err);
+            callback(err, null);
+        } else {
+            callback(null, result.rows.length > 0);  // Retorna true si el email ya existe
+        }
+    });
+};
+
 // Obtener todos los usuarios
 const obtenerUsuarios = (req, res) => {
     pool.query('SELECT * FROM usuario', (err, result) => {
@@ -30,13 +42,25 @@ const obtenerUsuarioPorId = (req, res) => {
 // Insertar un nuevo usuario
 const insertarUsuario = (req, res) => {
     const { email, contrasena, rol } = req.body;
-    pool.query('INSERT INTO usuario (email, contrasena, rol) VALUES ($1, $2, $3)', [email, contrasena, rol], (err) => {
+
+    // Verificar si el email ya está en uso
+    verificarEmailDuplicado(email, (err, existe) => {
         if (err) {
-            console.error('Error al insertar usuario:', err);
-            res.status(500).json({ message: 'Error al insertar usuario' });
-        } else {
-            res.json({ message: 'Usuario insertado con éxito' });
+            return res.status(500).json({ message: 'Error al verificar el email' });
         }
+        if (existe) {
+            return res.status(400).json({ message: 'El email ya está registrado' });
+        }
+
+        // Si el email no está duplicado, insertar el nuevo usuario
+        pool.query('INSERT INTO usuario (email, contrasena, rol) VALUES ($1, $2, $3)', [email, contrasena, rol], (err) => {
+            if (err) {
+                console.error('Error al insertar usuario:', err);
+                res.status(500).json({ message: 'Error al insertar usuario' });
+            } else {
+                res.json({ message: 'Usuario insertado con éxito' });
+            }
+        });
     });
 };
 
@@ -70,7 +94,7 @@ const eliminarUsuario = (req, res) => {
 module.exports = {
     obtenerUsuarios,
     obtenerUsuarioPorId,
-    insertarUsuario, 
+    insertarUsuario,
     actualizarUsuario,
     eliminarUsuario
 };

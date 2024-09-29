@@ -6,5 +6,6 @@ router.get('/', controladorProveedores.obtenerProveedores);
 router.post('/', controladorProveedores.insertarProveedor);
 router.put('/:id', controladorProveedores.actualizarProveedor);
 router.delete('/:id', controladorProveedores.eliminarProveedor);
+router.get('/:id', controladorProveedores.obtenerProveedorPorId);
 
 module.exports = router;
