@@ -1,5 +1,7 @@
 const pool = require('../bd/bd');
 const pdf = require('html-pdf');
+const fs = require('fs');
+const path = require('path');
 
 const obtenerProductosVendidos = (req, res) => {
     const query = `
@@ -9,7 +11,7 @@ const obtenerProductosVendidos = (req, res) => {
         WHERE v.cantidad_venta > 0
         ORDER BY v.fecha_venta DESC
     `;
-    
+
     pool.query(query, (err, result) => {
         if (err) {
             return res.status(500).json({ message: 'Error al obtener los productos vendidos' });
@@ -36,61 +38,33 @@ const generarFactura = (req, res) => {
 
         const productos = result.rows;
 
-        // Definir el HTML de la factura
-        let htmlContent = `
-            <h1>Factura Electrónica</h1>
-            <div style="border: 1px solid #000; padding: 10px;">
-                <h3>Sección Emisor</h3>
-                <p>Empresa XYZ</p>
-                <p>RUT: 12345678-9</p>
-                <p>Dirección: Calle Falsa 123, Santiago</p>
-            </div>
-            <div style="border: 1px solid #000; padding: 10px; margin-top: 10px;">
-                <h3>Sección Receptor</h3>
-                <p>Cliente: Juan Pérez</p>
-                <p>RUT: 98765432-1</p>
-                <p>Dirección: Calle Real 456, Santiago</p>
-            </div>
-            <h3>Detalles de la Venta</h3>
-            <table style="width: 100%; border-collapse: collapse;" border="1">
-                <thead>
-                    <tr>
-                        <th>ID Venta</th>
-                        <th>Producto</th>
-                        <th>Marca</th>
-                        <th>Modelo</th>
-                        <th>Talla</th>
-                        <th>Cantidad</th>
-                        <th>Precio Final</th>
-                        <th>Fecha Venta</th>
-                    </tr>
-                </thead>
-                <tbody>
-        `;
+        // Cargar el contenido HTML desde el archivo formato.html
+        const htmlFilePath = path.join(__dirname, '../pages/formato/formato.html');
+        let htmlContent = fs.readFileSync(htmlFilePath, 'utf-8');
 
+        // Generar la tabla de productos vendidos
+        let productosHTML = '';
         let total = 0;
 
         productos.forEach(producto => {
-            total += producto.precio_final;
-            htmlContent += `
+            const subtotal = producto.precio_final * producto.cantidad_venta;
+            total += subtotal;
+
+            productosHTML += `
                 <tr>
-                    <td>${producto.id_venta}</td>
-                    <td>${producto.productos_id_producto}</td>
-                    <td>${producto.marca}</td>
-                    <td>${producto.modelo}</td>
-                    <td>${producto.talla}</td>
                     <td>${producto.cantidad_venta}</td>
+                    <td>${producto.marca} ${producto.modelo}, Talla: ${producto.talla}</td>
                     <td>$${producto.precio_final.toLocaleString()}</td>
-                    <td>${new Date(producto.fecha_venta).toLocaleDateString()}</td>
+                    <td>$${subtotal.toLocaleString()}</td>
                 </tr>
             `;
         });
 
-        htmlContent += `
-                </tbody>
-            </table>
-            <h3 style="text-align: right;">Total: $${total.toLocaleString()}</h3>
-        `;
+        // Reemplazar los placeholders en el HTML con los datos generados
+        const fechaFactura = new Date().toLocaleDateString();
+        htmlContent = htmlContent.replace('{TABLA_PRODUCTOS}', productosHTML);
+        htmlContent = htmlContent.replace('{TOTAL}', `$${total.toLocaleString()}`);
+        htmlContent = htmlContent.replace('{FECHA_FACTURA}', fechaFactura);
 
         // Generar el PDF
         pdf.create(htmlContent).toFile('./facturas/factura.pdf', (err, result) => {
@@ -103,6 +77,6 @@ const generarFactura = (req, res) => {
 };
 
 module.exports = {
-    obtenerProductosVendidos,
-    generarFactura
+    generarFactura,
+    obtenerProductosVendidos
 };

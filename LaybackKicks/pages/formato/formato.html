@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+        }
+        .container {
+            width: 100%;
+            margin: 0 auto;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .company-info, .invoice-info {
+            width: 45%;
+        }
+        .invoice-info {
+            text-align: right;
+        }
+        .invoice-number {
+            color: red;
+            font-size: 18px;
+        }
+        .details {
+            margin-top: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .totals {
+            margin-top: 20px;
+            text-align: right;
+        }
+        .totals p {
+            font-size: 16px;
+        }
+    </style>
+    <title>Factura</title>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="company-info">
+                <h2>GDE S.A.</h2>
+                <p>RUT: 76.129.486-5</p>
+                <p>Gestora de Documentos Electrónicos</p>
+                <p>Dirección: Santiago Centro, Chile</p>
+            </div>
+            <div class="invoice-info">
+                <p class="invoice-number">Factura Electrónica Nº 135855</p>
+                <p>Fecha: {FECHA_FACTURA}</p>
+            </div>
+        </div>
+
+        <div class="details">
+            <p>Cliente: Nombre del cliente</p>
+            <p>RUT: Cliente RUT</p>
+            <p>Dirección: Dirección del cliente</p>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Cantidad</th>
+                    <th>Descripción</th>
+                    <th>Valor Unitario</th>
+                    <th>Valor Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {TABLA_PRODUCTOS}
+            </tbody>
+        </table>
+
+        <div class="totals">
+            <p><strong>Total: {TOTAL}</strong></p>
+        </div>
+    </div>
+</body>
+</html>
