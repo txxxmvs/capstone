@@ -11,9 +11,9 @@ $('#login-form').submit(function(event) {
         data: JSON.stringify({ username, password }),
         success: function(response) {
             if (response.rol === 'admin') {
-                window.location.href = '/pages/dashboard.html'; 
+                window.location.href = '/pages/admin/dashboard.html'; 
             } else if (response.rol === 'vendedor') {
-                window.location.href = '/pages/vendedor_dashboard.html';
+                window.location.href = '/pages/vendedor/v_stock.html';
             }
         },
         error: function(error) {

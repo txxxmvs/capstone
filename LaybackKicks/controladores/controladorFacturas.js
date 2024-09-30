@@ -3,23 +3,6 @@ const pdf = require('html-pdf');
 const fs = require('fs');
 const path = require('path');
 
-const obtenerProductosVendidos = (req, res) => {
-    const query = `
-        SELECT v.id_venta, v.productos_id_producto, v.fecha_venta, v.cantidad_venta, v.precio_final, p.marca, p.modelo, p.talla
-        FROM venta v
-        JOIN productos p ON v.productos_id_producto = p.id_producto
-        WHERE v.cantidad_venta > 0
-        ORDER BY v.fecha_venta DESC
-    `;
-
-    pool.query(query, (err, result) => {
-        if (err) {
-            return res.status(500).json({ message: 'Error al obtener los productos vendidos' });
-        }
-        res.json(result.rows);
-    });
-};
-
 const generarFactura = (req, res) => {
     const { ventas } = req.body;
 
@@ -27,8 +10,37 @@ const generarFactura = (req, res) => {
         return res.status(400).json({ message: 'No se seleccionaron ventas' });
     }
 
-    const consulta = `SELECT v.id_venta, v.productos_id_producto, v.fecha_venta, v.cantidad_venta, v.precio_final, p.marca, p.modelo, p.talla 
-                      FROM venta v JOIN productos p ON v.productos_id_producto = p.id_producto WHERE v.id_venta = ANY($1::int[])`;
+    // Consulta para obtener el número de la última factura
+    const consultaUltimaFactura = `SELECT numero_factura FROM factura ORDER BY numero_factura DESC LIMIT 1`;
+
+    pool.query(consultaUltimaFactura, (err, result) => {
+        if (err) {
+            console.error('Error al obtener el número de la última factura:', err);
+            return res.status(500).json({ message: 'Error al generar el número de factura' });
+        }
+
+        let numeroFactura = '000001'; // Número inicial si no existen facturas
+
+        if (result.rows.length > 0) {
+            const ultimaFactura = result.rows[0].numero_factura;
+            numeroFactura = (parseInt(ultimaFactura, 10) + 1).toString().padStart(6, '0');
+        }
+
+        // Continuar con la generación de la factura una vez que se tiene el número
+        generarFacturaConNumero(req, res, numeroFactura);
+    });
+};
+
+const generarFacturaConNumero = (req, res, numeroFactura) => {
+    const { ventas } = req.body;
+
+    const consulta = `
+        SELECT v.id_venta, v.productos_id_producto, v.fecha_venta, v.cantidad_venta, v.precio_final, 
+               p.marca, p.modelo, p.talla 
+        FROM venta v 
+        JOIN productos p ON v.productos_id_producto = p.id_producto 
+        WHERE v.id_venta = ANY($1::int[])
+    `;
 
     pool.query(consulta, [ventas], (err, result) => {
         if (err) {
@@ -65,18 +77,31 @@ const generarFactura = (req, res) => {
         htmlContent = htmlContent.replace('{TABLA_PRODUCTOS}', productosHTML);
         htmlContent = htmlContent.replace('{TOTAL}', `$${total.toLocaleString()}`);
         htmlContent = htmlContent.replace('{FECHA_FACTURA}', fechaFactura);
+        htmlContent = htmlContent.replace('{NUMERO_FACTURA}', numeroFactura); // Insertar el número de factura
 
-        // Generar el PDF
-        pdf.create(htmlContent).toFile('./facturas/factura.pdf', (err, result) => {
+        // Insertar el número de factura en la tabla `factura`
+        const insertarFactura = `
+            INSERT INTO factura (numero_factura, fecha)
+            VALUES ($1, NOW())
+        `;
+
+        pool.query(insertarFactura, [numeroFactura], (err) => {
             if (err) {
-                return res.status(500).send(err);
+                console.error('Error al insertar el número de la factura:', err);
+                return res.status(500).json({ message: 'Error al insertar el número de la factura' });
             }
-            res.sendFile(result.filename);
+
+            // Generar el PDF
+            pdf.create(htmlContent).toFile(`./facturas/factura_${numeroFactura}.pdf`, (err, result) => {
+                if (err) {
+                    return res.status(500).send(err);
+                }
+                res.sendFile(result.filename);
+            });
         });
     });
 };
 
 module.exports = {
-    generarFactura,
-    obtenerProductosVendidos
+    generarFactura
 };

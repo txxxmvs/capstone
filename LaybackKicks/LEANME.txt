@@ -54,6 +54,11 @@ CREATE TABLE Venta (
     FOREIGN KEY (Productos_id_producto) REFERENCES Productos(id_producto)
 );
 
+CREATE TABLE factura (
+    id SERIAL PRIMARY KEY,
+    numero_factura VARCHAR(6) UNIQUE NOT NULL,
+    fecha TIMESTAMP DEFAULT NOW()
+);
 
 -----------------------------------------------------------------------------
 

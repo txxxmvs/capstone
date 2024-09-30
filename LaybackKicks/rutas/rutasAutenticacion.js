@@ -17,23 +17,23 @@ const protegerRutaAdmin = (req, res, next) => {
 
 // Proteger las rutas del dashboard y otros HTML solo para admins
 router.get('/dashboard', protegerRutaAdmin, (req, res) => {
-    res.sendFile(path.join(__dirname, '../pages/dashboard.html'));
+    res.sendFile(path.join(__dirname, '../pages/admin/dashboard.html'));
 });
 
 router.get('/g_proveedores', protegerRutaAdmin, (req, res) => {
-    res.sendFile(path.join(__dirname, '../pages/g_proveedores.html'));
+    res.sendFile(path.join(__dirname, '../pages/admin/g_proveedores.html'));
 });
 
 router.get('/g_usuarios', protegerRutaAdmin, (req, res) => {
-    res.sendFile(path.join(__dirname, '../pages/g_usuarios.html'));
+    res.sendFile(path.join(__dirname, '../pages/admin/g_usuarios.html'));
 });
 
 router.get('/reportes', protegerRutaAdmin, (req, res) => {
-    res.sendFile(path.join(__dirname, '../pages/reportes.html'));
+    res.sendFile(path.join(__dirname, '../pages/admin/reportes.html'));
 });
 
 router.get('/stock', protegerRutaAdmin, (req, res) => {
-    res.sendFile(path.join(__dirname, '../pages/stock.html'));
+    res.sendFile(path.join(__dirname, '../pages/admin/stock.html'));
 });
 
 module.exports = router;

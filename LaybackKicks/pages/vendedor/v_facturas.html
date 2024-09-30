@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generar Reportes y Facturas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/styles.css">
+</head>
+<body>
+    <div id="navbar-placeholder"></div>
+    
+    <div class="container mt-5">
+        <h2 class="text-center">Facturacion</h2>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>ID Venta</th>
+                    <th>ID Producto</th>
+                    <th>Marca</th>
+                    <th>Modelo</th>
+                    <th>Talla</th>
+                    <th>Fecha Venta</th>
+                    <th>Cantidad</th>
+                    <th>Precio Final</th>
+                </tr>
+            </thead>
+            <tbody id="lista-productos-vendidos"></tbody>
+
+        </table>
+        <button id="generar-factura-seleccionada" class="btn btn-primary mt-3">Generar Factura</button>
+
+    </div>
+    
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="../../js/vendedor/v_navbar.js"></script>
+    <script src="../../js/admin/facturas.js"></script>
+</body>
+</html>
