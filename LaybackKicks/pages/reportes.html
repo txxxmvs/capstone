@@ -39,10 +39,34 @@
         </div>
         <div id="report-result" class="mt-3">
     </div>
+
+    <div class="container mt-5">
+        <h2 class="text-center">Facturacion</h2>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>ID Venta</th>
+                    <th>ID Producto</th>
+                    <th>Marca</th>
+                    <th>Modelo</th>
+                    <th>Talla</th>
+                    <th>Fecha Venta</th>
+                    <th>Cantidad</th>
+                    <th>Precio Final</th>
+                </tr>
+            </thead>
+            <tbody id="lista-productos-vendidos"></tbody>
+
+        </table>
+        <button id="generar-factura-seleccionada" class="btn btn-primary mt-3">Generar Factura</button>
+
+    </div>
     
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="../js/reportes.js"></script>
     <script src="../js/navbar.js"></script>
+    <script src="../js/facturas.js"></script>
 </body>
 </html>

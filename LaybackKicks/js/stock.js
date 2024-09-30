@@ -14,9 +14,13 @@ $(document).ready(function() {
         return formato.replace(/\./g, '').replace('$', '');
     }
 
-    $('#precio-compra, #precio-venta').on('input', function() {
+    $('#precio-compra, #precio-venta, #edit-precio-compra, #edit-precio-venta').on('input', function() {
         const valorLimpio = this.value.replace(/\D/g, '');
-        this.value = formatearPrecio(valorLimpio);
+        if (!isNaN(valorLimpio) && valorLimpio.length > 0) {
+            this.value = formatearPrecio(valorLimpio);
+        } else {
+            this.value = ''; 
+        }
     });
 
     function cargarProductos() {
@@ -24,13 +28,14 @@ $(document).ready(function() {
             url: 'http://localhost:3000/api/productos',
             method: 'GET',
             success: function(productos) {
+                productos.sort((a, b) => b.id_producto - a.id_producto);
                 let filas = '';
                 productos.forEach(function(producto) {
                     filas += `
                         <tr>
                             <td>${producto.id_producto}</td>
-                            <td>${producto.modelo}</td>
                             <td>${producto.marca}</td>
+                            <td>${producto.modelo}</td>
                             <td>${producto.talla}</td>
                             <td>${producto.condicion}</td>
                             <td>${producto.cantidad}</td>
@@ -151,7 +156,7 @@ $(document).ready(function() {
 
  // Abre el modal de edición cuando se hace clic en el botón "Editar"
     $(document).on('click', '.editar', function() {
-        const idProducto = $(this).data('id');  // Obtiene el ID del producto desde el botón
+        const idProducto = $(this).data('id');  
 
         if (!idProducto || isNaN(idProducto)) {
             console.error('ID de producto no válido:', idProducto);
@@ -183,8 +188,7 @@ $(document).ready(function() {
             }
         });
     });
-
-    // Procesar la actualización del producto
+    // Procesar la actualización del producto (limpiar el precio antes de guardar)
     $('#editar-producto').submit(function(e) {
         e.preventDefault();
 
@@ -195,7 +199,7 @@ $(document).ready(function() {
             talla: $('#edit-talla').val(),
             condicion: $('#edit-condicion').val(),
             cantidad: $('#edit-cantidad').val(),
-            precio_compra: limpiarPrecio($('#edit-precio-compra').val()),  
+            precio_compra: limpiarPrecio($('#edit-precio-compra').val()), 
             precio_venta: limpiarPrecio($('#edit-precio-venta').val()),    
             fecha_adq: $('#edit-fecha-adq').val(),
         };

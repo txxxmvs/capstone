@@ -1,5 +1,5 @@
-const pool = require('../bd/bd'); // Asegúrate de que el pool de conexión esté en la ruta correcta
-const pdf = require('html-pdf'); // Importación del paquete html-pdf
+const pool = require('../bd/bd'); 
+const pdf = require('html-pdf'); 
 
 // Función para generar reportes según el tipo y el periodo
 const generarReporte = (req, res) => {
@@ -61,14 +61,17 @@ const generarReporte = (req, res) => {
 
 // Función para generar el PDF a partir de HTML
 const generarPDF = (req, res) => {
-  const { html, nombreArchivo } = req.body; // El HTML y el nombre del archivo se pasan en el body
+  const { html, nombreArchivo } = req.body;
 
   pdf.create(html).toFile(`./reportes/${nombreArchivo}`, (err, result) => {
     if (err) {
       return res.status(500).send(err);
     }
-    res.sendFile(result.filename); // Enviar el archivo generado al cliente
+    res.sendFile(result.filename); 
   });
 };
 
-module.exports = { generarReporte, generarPDF };
+module.exports = { 
+  generarReporte, 
+  generarPDF
+};

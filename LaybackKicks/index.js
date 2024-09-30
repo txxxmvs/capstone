@@ -16,6 +16,7 @@ const rutasDashboard = require('./rutas/rutasDashboard');
 const rutasReportes = require('./rutas/rutasReportes');
 const rutasAutenticacion = require('./rutas/rutasAutenticacion');
 const rutasVentas = require('./rutas/rutasVentas');
+const rutasFacturas = require('./rutas/rutasFacturas'); 
 
 // Usar las rutas
 app.use('/api/usuarios', rutasUsuarios);
@@ -25,6 +26,7 @@ app.use('/api/dashboard', rutasDashboard);
 app.use('/api/reportes', rutasReportes);
 app.use('/api/autenticacion', rutasAutenticacion); 
 app.use('/api/ventas', rutasVentas);
+app.use('/api/facturas', rutasFacturas);  
 
 // Iniciar el servidor
 app.listen(puerto, () => {

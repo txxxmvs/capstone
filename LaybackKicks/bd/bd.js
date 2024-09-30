@@ -2,10 +2,10 @@ const { Pool } = require('pg'); // Importar el módulo para PostgreSQL
 
 // Configuración de la conexión a PostgreSQL
 const pool = new Pool({
-  user: 'admin',           // Tu usuario de PostgreSQL
+  user: 'postgres',           // Tu usuario de PostgreSQL
   host: 'localhost',          // El host de tu base de datos
   database: 'laybackkicks',   // El nombre de la base de datos
-  password: 'password',          // La contraseña que configuraste
+  password: 'tomas',          // La contraseña que configuraste
   port: 5432,                 // El puerto de PostgreSQL
 });
 
