@@ -44,8 +44,7 @@ $(document).ready(function() {
                             <td>
                                 <button class="btn btn-warning btn-sm editar" data-id="${producto.id_producto}">Editar</button>
                                 <button class="btn btn-danger btn-sm eliminar" data-id="${producto.id_producto}">Eliminar</button>
-                                <button class="btn btn-success btn-sm vender" data-id="${producto.id_producto}" data-cantidad="${producto.cantidad}">Vender</button>
-                            </td>
+                                ${producto.cantidad > 0 ? `<button class="btn btn-success btn-sm vender" data-id="${producto.id_producto}" data-cantidad="${producto.cantidad}">Vender</button>` : ''}
                         </tr>
                     `;
                 });
