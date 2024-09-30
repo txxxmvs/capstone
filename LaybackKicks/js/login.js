@@ -10,8 +10,11 @@ $('#login-form').submit(function(event) {
         contentType: 'application/json',
         data: JSON.stringify({ username, password }),
         success: function(response) {
-            alert('Login exitoso');
-            window.location.href = '/pages/dashboard.html';
+            if (response.rol === 'admin') {
+                window.location.href = '/pages/dashboard.html'; 
+            } else if (response.rol === 'vendedor') {
+                window.location.href = '/pages/vendedor_dashboard.html';
+            }
         },
         error: function(error) {
             alert(error.responseJSON.message); 

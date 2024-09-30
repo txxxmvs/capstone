@@ -1,12 +1,21 @@
 const express = require('express');
+const session = require('express-session');
 const cors = require('cors');
 const app = express();
 const puerto = 3000;
 
+// Configurar la sesión
+app.use(session({
+    secret: 'clave-secreta',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false } // Cambia a true si usas HTTPS
+}));
+
 // Middlewares
 app.use(cors());
 app.use(express.json());
-app.use('/paginas', express.static(__dirname + '/paginas')); 
+app.use('/pages', express.static(__dirname + '/pages')); 
 
 // Importar rutas
 const rutasUsuarios = require('./rutas/rutasUsuarios');
