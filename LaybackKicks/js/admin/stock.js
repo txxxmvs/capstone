@@ -14,6 +14,17 @@ $(document).ready(function() {
         return formato.replace(/\./g, '').replace('$', '');
     }
 
+    // Función para mostrar u ocultar los campos de Instagram
+    function toggleInstagramFields() {
+        const instagramFields = document.getElementById('instagramFields');
+        const publicarInstagram = document.getElementById('publicarInstagram');
+        if (publicarInstagram.checked) {
+            instagramFields.style.display = 'block';
+        } else {
+            instagramFields.style.display = 'none';
+        }
+    }
+
     $('#precio-compra, #precio-venta, #edit-precio-compra, #edit-precio-venta').on('input', function() {
         const valorLimpio = this.value.replace(/\D/g, '');
         if (!isNaN(valorLimpio) && valorLimpio.length > 0) {
@@ -45,6 +56,7 @@ $(document).ready(function() {
                                 <button class="btn btn-warning btn-sm editar" data-id="${producto.id_producto}">Editar</button>
                                 <button class="btn btn-danger btn-sm eliminar" data-id="${producto.id_producto}">Eliminar</button>
                                 ${producto.cantidad > 0 ? `<button class="btn btn-success btn-sm vender" data-id="${producto.id_producto}" data-cantidad="${producto.cantidad}">Vender</button>` : ''}
+                            </td>
                         </tr>
                     `;
                 });
@@ -60,7 +72,6 @@ $(document).ready(function() {
     $('#nuevo-producto').submit(function(e) {
         e.preventDefault();
     
-        // Validar que todos los campos estén completos
         const marca = $('#marca').val().trim();
         const modelo = $('#modelo').val().trim();
         const talla = $('#talla').val().trim();
@@ -69,12 +80,15 @@ $(document).ready(function() {
         const precio_compra = limpiarPrecio($('#precio-compra').val().trim());
         const precio_venta = limpiarPrecio($('#precio-venta').val().trim());
         const fecha_adq = $('#fecha-adq').val().trim();
-    
+        const publicarInstagram = $('#publicarInstagram').is(':checked');
+        const descripcionInstagram = $('#instagramDescripcion').val().trim();
+        const imagenesInstagram = $('#instagramImagenes')[0].files;
+
         if (!marca || !modelo || !talla || !condicion || !cantidad || !precio_compra || !precio_venta || !fecha_adq) {
             alert('Por favor, completa todos los campos.');
             return;
         }
-    
+
         const nuevoProducto = {
             marca: marca,
             modelo: modelo,
@@ -84,8 +98,22 @@ $(document).ready(function() {
             precio_compra: precio_compra,
             precio_venta: precio_venta,
             fecha_adq: fecha_adq,
+            publicarInstagram: publicarInstagram,
+            descripcionInstagram: descripcionInstagram,
+            imagenesInstagram: []
         };
-    
+
+        // Procesar imágenes seleccionadas para Instagram
+        if (imagenesInstagram.length > 0) {
+            for (let i = 0; i < imagenesInstagram.length; i++) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    nuevoProducto.imagenesInstagram.push(e.target.result);
+                };
+                reader.readAsDataURL(imagenesInstagram[i]);
+            }
+        }
+
         $.ajax({
             url: 'http://localhost:3000/api/productos',
             method: 'POST',
@@ -95,12 +123,18 @@ $(document).ready(function() {
                 alert('Producto agregado con éxito');
                 cargarProductos(); 
                 $('#nuevo-producto')[0].reset();
+                $('#instagramFields').hide();  // Ocultar campos de Instagram
             },
             error: function(error) {
                 alert('Error al agregar el producto');
                 console.error(error);
             }
         });
+    });
+
+    // Función para mostrar los campos de Instagram si se marca la opción
+    $('#publicarInstagram').change(function() {
+        toggleInstagramFields();
     });
 
     // Registrar venta
@@ -148,73 +182,6 @@ $(document).ready(function() {
             },
             error: function(error) {
                 alert('Error al registrar la venta');
-                console.error(error);
-            }
-        });
-    });
-
- // Abre el modal de edición cuando se hace clic en el botón "Editar"
-    $(document).on('click', '.editar', function() {
-        const idProducto = $(this).data('id');  
-
-        if (!idProducto || isNaN(idProducto)) {
-            console.error('ID de producto no válido:', idProducto);
-            alert('ID de producto no válido');
-            return;
-        }
-
-        // Llenar el formulario del modal con los valores actuales del producto
-        $.ajax({
-            url: `http://localhost:3000/api/productos/${idProducto}`,
-            method: 'GET',
-            success: function(producto) {
-                $('#edit-id-producto').val(producto.id_producto);
-                $('#edit-marca').val(producto.marca);
-                $('#edit-modelo').val(producto.modelo);
-                $('#edit-talla').val(producto.talla);
-                $('#edit-condicion').val(producto.condicion);
-                $('#edit-cantidad').val(producto.cantidad);
-                $('#edit-precio-compra').val(formatearPrecio(producto.precio_compra));
-                $('#edit-precio-venta').val(formatearPrecio(producto.precio_venta));
-                $('#edit-fecha-adq').val(producto.fecha_adquisicion);
-
-                // Mostrar el modal
-                $('#editModal').modal('show');
-            },
-            error: function(error) {
-                console.error('Error al obtener los datos del producto para editar:', error);
-                alert('Error al cargar los datos del producto');
-            }
-        });
-    });
-    // Procesar la actualización del producto (limpiar el precio antes de guardar)
-    $('#editar-producto').submit(function(e) {
-        e.preventDefault();
-
-        const idProducto = $('#edit-id-producto').val();
-        const productoActualizado = {
-            marca: $('#edit-marca').val(),
-            modelo: $('#edit-modelo').val(),
-            talla: $('#edit-talla').val(),
-            condicion: $('#edit-condicion').val(),
-            cantidad: $('#edit-cantidad').val(),
-            precio_compra: limpiarPrecio($('#edit-precio-compra').val()), 
-            precio_venta: limpiarPrecio($('#edit-precio-venta').val()),    
-            fecha_adq: $('#edit-fecha-adq').val(),
-        };
-
-        $.ajax({
-            url: `http://localhost:3000/api/productos/${idProducto}`,
-            method: 'PUT',
-            contentType: 'application/json',
-            data: JSON.stringify(productoActualizado),
-            success: function(response) {
-                alert('Producto actualizado con éxito');
-                $('#editModal').modal('hide');
-                cargarProductos();
-            },
-            error: function(error) {
-                alert('Error al actualizar el producto');
                 console.error(error);
             }
         });

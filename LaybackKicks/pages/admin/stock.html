@@ -71,6 +71,22 @@
                         <label for="fecha-adq" class="form-label">Fecha de Adquisición</label>
                         <input type="date" class="form-control" id="fecha-adq" required>
                     </div>
+                    <div class="mb-3">
+                        <input type="checkbox" id="publicarInstagram" name="publicarInstagram" onchange="toggleInstagramFields()">
+                        <label for="publicarInstagram">Publicar en Instagram</label>
+                    </div>
+                    
+                    <div id="instagramFields" style="display: none;">
+                        <div class="mb-3">
+                            <label for="instagramDescripcion" class="form-label">Descripción para Instagram</label>
+                            <textarea class="form-control" id="instagramDescripcion" rows="3" placeholder="Escribe una descripción..."></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="instagramImagenes" class="form-label">Subir Imágenes</label>
+                            <input type="file" class="form-control" id="instagramImagenes" multiple>
+                        </div>
+                    </div>
+                    
                     <button type="submit" class="btn btn-primary w-100">Agregar</button>
                 </form>
             </div>
