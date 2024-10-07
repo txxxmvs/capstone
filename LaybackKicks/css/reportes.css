@@ -1,0 +1,105 @@
+/* Colores de la paleta */
+:root {
+    --color-principal: #1e3a8a;
+    --color-secundario: #3b82f6;
+    --color-acento: #ffffff;
+    --color-texto: #111827;
+    --color-hover: #2563eb;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-image: url('../img/fondo.png'); 
+    background-size: contain; 
+    background-repeat: no-repeat; 
+    background-color: #20225B; 
+    background-position: center center; 
+    background-attachment: fixed; 
+    margin: 0;
+    padding: 0;
+    color: var(--color-texto); 
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+h2 {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--color-acento);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+    margin-bottom: 20px;
+}
+
+/* Sección de reportes */
+.section-box {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    height: 100%;
+}
+
+#reportes-section {
+    max-height: 600px;
+    overflow-y: auto;
+}
+
+.table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+
+.table th, .table td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #ddd;
+    color: var(--color-texto);
+}
+
+.table th {
+    background-color: var(--color-principal);
+    color: var(--color-acento);
+}
+
+/* Estilos de formularios */
+.form-control {
+    background-color: #fff !important;
+    border: 1px solid #ddd !important;
+    border-radius: 4px;
+    padding: 10px;
+    color: var(--color-texto) !important;
+}
+
+.form-control::placeholder {
+    color: #6c757d;
+}
+
+/* Botones */
+.btn-primary {
+    background-color: var(--color-secundario) !important;
+    border-color: var(--color-secundario) !important;
+    font-weight: bold;
+    padding: 10px 20px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: var(--color-hover) !important;
+    border-color: var(--color-hover) !important;
+}
+
+.filtro-busqueda select, .filtro-busqueda input {
+    margin-right: 10px;
+    padding: 5px;
+}
+
+.mt-3 {
+    margin-top: 1rem !important;
+}

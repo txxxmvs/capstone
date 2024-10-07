@@ -2,43 +2,61 @@ const pool = require('../bd/bd');
 
 // Obtener datos del dashboard filtrados por mes y año
 const obtenerDatosDashboard = (req, res) => {
-    const { mes, año } = req.query;
+    // Convertir mes y año a números
+    const mes = Number(req.query.mes);
+    const año = Number(req.query.año);
 
+    if (!mes || !año) {
+        return res.status(400).json({ message: 'Mes o año inválido' });
+    }
+
+    // Consulta para obtener productos del mes y año
     const queryProductos = `
-        SELECT precio_compra, precio_venta, cantidad 
+        SELECT precio_compra, precio_venta, cantidad_original 
         FROM productos
         WHERE EXTRACT(MONTH FROM fecha_adquisicion) = $1 
         AND EXTRACT(YEAR FROM fecha_adquisicion) = $2
     `;
 
+    // Consulta para obtener ventas del mes y año
     const queryVentas = `
-        SELECT SUM(precio_final) AS totalVentas 
+        SELECT precio_final, cantidad_venta 
         FROM venta 
         WHERE EXTRACT(MONTH FROM fecha_venta) = $1 
         AND EXTRACT(YEAR FROM fecha_venta) = $2
     `;
 
+    // Ejecutar la consulta para productos
     pool.query(queryProductos, [mes, año], (err, productos) => {
         if (err) {
-            console.error('Error al obtener los datos del dashboard:', err);
-            return res.status(500).json({ message: 'Error al obtener los datos del dashboard' });
+            console.error('Error al obtener los productos del dashboard:', err);
+            return res.status(500).json({ message: 'Error al obtener los productos del dashboard' });
         }
 
         let montoInvertido = 0;
         let posibleRetorno = 0;
 
+        // Calcular monto invertido y posible retorno sumando los valores
         productos.rows.forEach(producto => {
-            montoInvertido += producto.precio_compra * producto.cantidad;
-            posibleRetorno += producto.precio_venta * producto.cantidad;
+            montoInvertido += producto.precio_compra * producto.cantidad_original;
+            posibleRetorno += producto.precio_venta * producto.cantidad_original;
         });
 
+        // Ejecutar la consulta para ventas
         pool.query(queryVentas, [mes, año], (err, ventasResult) => {
             if (err) {
                 console.error('Error al obtener el total de ventas:', err);
                 return res.status(500).json({ message: 'Error al obtener el total de ventas' });
             }
 
-            const totalVentas = ventasResult.rows[0].totalventas || 0;
+            let totalVentas = 0;
+
+            // Calcular el total de ventas sumando los valores
+            ventasResult.rows.forEach(venta => {
+                totalVentas += venta.precio_final * venta.cantidad_venta;
+            });
+
+            // Enviar la respuesta con los resultados
             res.json({ montoInvertido, posibleRetorno, totalVentas });
         });
     });

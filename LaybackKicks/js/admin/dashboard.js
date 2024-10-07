@@ -6,7 +6,7 @@ $(document).ready(function() {
         yearSelect.append(new Option(year, year));
     }
 
-    $('#year-select').val(2024);
+    $('#year-select').val(currentYear);
 
     function cargarDatosDashboard(mes, año) {
         $.ajax({
@@ -23,8 +23,8 @@ $(document).ready(function() {
         });
     }
 
-    const currentMonth = new Date().getMonth() + 1; 
-    cargarDatosDashboard(currentMonth, 2024);
+    const currentMonth = new Date().getMonth() + 1;
+    cargarDatosDashboard(currentMonth, currentYear);
 
     $('#filter-button').click(function() {
         const mes = $('#month-select').val();

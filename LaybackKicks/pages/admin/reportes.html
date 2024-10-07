@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Generar Reportes y Facturas</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../../css/styles.css">
+    <link rel="stylesheet" href="../../css/reportes.css">
+    <link rel="stylesheet" href="../../css/navbar.css">
 </head>
 <body>
     <div id="navbar-placeholder"></div>
@@ -41,26 +42,59 @@
     </div>
 
     <div class="container mt-5">
-        <h2 class="text-center">Facturacion</h2>
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th></th>
-                    <th>ID Venta</th>
-                    <th>ID Producto</th>
-                    <th>Marca</th>
-                    <th>Modelo</th>
-                    <th>Talla</th>
-                    <th>Fecha Venta</th>
-                    <th>Cantidad</th>
-                    <th>Precio Final</th>
-                </tr>
-            </thead>
-            <tbody id="lista-productos-vendidos"></tbody>
+        <h2 class="text-center">Facturación</h2>
+    
+        <div class="section-box">
+            <div class="row filtro-busqueda">
+                <div class="col-md-6">
+                    <label for="mes-select" class="form-label">Mes</label>
+                    <select id="mes-select" class="form-select form-select-sm">
+                        <option value="1">Enero</option>
+                        <option value="2">Febrero</option>
+                        <option value="3">Marzo</option>
+                        <option value="4">Abril</option>
+                        <option value="5">Mayo</option>
+                        <option value="6">Junio</option>
+                        <option value="7">Julio</option>
+                        <option value="8">Agosto</option>
+                        <option value="9">Septiembre</option>
+                        <option value="10">Octubre</option>
+                        <option value="11">Noviembre</option>
+                        <option value="12">Diciembre</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label for="year-select" class="form-label">Año</label>
+                    <select id="year-select" class="form-select form-select-sm">
+                    </select>
+                </div>
 
-        </table>
-        <button id="generar-factura-seleccionada" class="btn btn-primary mt-3">Generar Factura</button>
+                <div class="col-md-12  mt-3">
+                    <button id="filtrar-facturas" class="btn btn-primary">Filtrar Facturas</button>
+                </div>
+            </div>
 
+            <div style="max-height: 400px; overflow-y: scroll;">
+                <table class="table table-bordered mt-3">
+                    <thead>
+                        <tr>
+                            <th style="width: 30px;"></th> 
+                            <th>ID Venta</th>
+                            <th>ID Producto</th>
+                            <th>Marca</th>
+                            <th>Modelo</th>
+                            <th>Talla</th>
+                            <th>Fecha Venta</th>
+                            <th>Cantidad</th>
+                            <th>Precio Final</th>
+                        </tr>
+                    </thead>
+                    <tbody id="lista-productos-vendidos"></tbody>
+                </table>
+            </div>
+
+            <button id="generar-factura-seleccionada" class="btn btn-primary mt-3">Generar Factura</button>
+        </div>
     </div>
     
 

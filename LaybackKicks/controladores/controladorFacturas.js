@@ -4,16 +4,34 @@ const fs = require('fs');
 const path = require('path');
 
 const obtenerProductosVendidos = (req, res) => {
-    const query = `
+    const { mes, año } = req.query;
+
+    let query = `
         SELECT v.id_venta, v.productos_id_producto, v.fecha_venta, v.cantidad_venta, v.precio_final, p.marca, p.modelo, p.talla
         FROM venta v
         JOIN productos p ON v.productos_id_producto = p.id_producto
         WHERE v.cantidad_venta > 0
-        ORDER BY v.fecha_venta DESC
     `;
 
-    pool.query(query, (err, result) => {
+    const params = [];
+
+    // Si se pasa un mes, se filtran los resultados por ese mes usando un parámetro
+    if (mes) {
+        query += ` AND EXTRACT(MONTH FROM v.fecha_venta) = $1`;
+        params.push(Number(mes));  // Convertir el mes a un número por seguridad
+    }
+
+    if (año) {
+        query += ` AND EXTRACT(YEAR FROM v.fecha_venta) = $2`;
+        params.push(Number(año));  // Convertir el año a un número por seguridad
+    }
+
+    query += ' ORDER BY v.fecha_venta DESC';
+
+    // Usar los parámetros en la consulta
+    pool.query(query, params, (err, result) => {
         if (err) {
+            console.error('Error al obtener los productos vendidos:', err);
             return res.status(500).json({ message: 'Error al obtener los productos vendidos' });
         }
         res.json(result.rows);

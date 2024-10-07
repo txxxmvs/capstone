@@ -1,0 +1,73 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-image: url('../img/fondo.png'); 
+    background-size: contain; 
+    background-repeat: no-repeat; 
+    background-color: #20225B; 
+    background-position: center center; 
+    background-attachment: fixed; 
+    margin: 0;
+    padding: 0;
+    color: var(--color-texto); 
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+h2 {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #ffffff;
+    margin-bottom: 20px;
+}
+
+/* Sección de gestión de usuarios */
+.section-box {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+
+.table th, .table td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #ddd;
+    color: #111827;
+}
+
+.table th {
+    background-color: #1e3a8a;
+    color: #ffffff;
+}
+
+/* Botones */
+.btn-primary {
+    background-color: #3b82f6;
+    border-color: #3b82f6;
+    font-weight: bold;
+    padding: 10px 20px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #2563eb;
+    border-color: #2563eb;
+}
+
+/* Formulario de búsqueda */
+.filtro-busqueda select, .filtro-busqueda input {
+    margin-right: 10px;
+    padding: 5px;
+}
