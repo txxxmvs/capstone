@@ -7,6 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../../css/dashboard.css">
     <link rel="stylesheet" href="../../css/navbar.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Chart.js -->
 </head>
 <body>
     <div id="navbar-placeholder"></div>
@@ -41,43 +42,126 @@
                 <button id="filter-button" class="btn btn-primary btn-sm">Filtrar</button>
             </div>
         </div>                
-        
-        <div class="row">
-            <div class="col-md-4">
-                <div class="card text-white bg-primary mb-3">
-                    <div class="card-header">Monto Invertido en Sneakers</div>
-                    <div class="card-body">
-                        <h3 class="card-title"><span id="monto-invertido">0</span></h3>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card text-white bg-success mb-3">
-                    <div class="card-header">Posible Retorno</div>
-                    <div class="card-body">
-                        <h3 class="card-title"><span id="posible-retorno">0</span></h3>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card text-white bg-warning mb-3">
-                    <div class="card-header">Total de Ventas</div>
-                    <div class="card-body">
-                        <h3 class="card-title"><span id="total-ventas">0</span></h3>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> 
-       
 
-<!-- API de StockX -->
-        <div class="row">
+        <!-- Carrusel -->
+        <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3" aria-label="Slide 4"></button>
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="4" aria-label="Slide 5"></button>
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="5" aria-label="Slide 6"></button>
+            </div>
+            <div class="carousel-inner">
+                <!-- Primera sección del carrusel -->
+                <div class="carousel-item active">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="card text-white bg-primary mb-3">
+                                <div class="card-header">Monto Invertido en Sneakers</div>
+                                <div class="card-body">
+                                    <h3 class="card-title"><span id="monto-invertido">0</span></h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card text-white bg-success mb-3">
+                                <div class="card-header">Posible Retorno</div>
+                                <div class="card-body">
+                                    <h3 class="card-title"><span id="posible-retorno">0</span></h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card text-white bg-warning mb-3">
+                                <div class="card-header">Total de Ventas</div>
+                                <div class="card-body">
+                                    <h3 class="card-title"><span id="total-ventas">0</span></h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Nueva sección: Total Productos Vendidos -->
+                <div class="carousel-item">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card text-white bg-info mb-3">
+                                <div class="card-header">Total Productos Vendidos</div>
+                                <div class="card-body">
+                                    <h3 class="card-title"><span id="total-productos">0</span></h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Nueva sección: Ganancia Estimada -->
+                <div class="carousel-item">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card text-white bg-danger mb-3">
+                                <div class="card-header">Ganancia Estimada</div>
+                                <div class="card-body">
+                                    <h3 class="card-title"><span id="ganancia-estimada">0</span></h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Nueva sección: Promedio Precio de Venta -->
+                <div class="carousel-item">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card text-white bg-secondary mb-3">
+                                <div class="card-header">Promedio Precio de Venta</div>
+                                <div class="card-body">
+                                    <h3 class="card-title"><span id="promedio-precio-venta">0</span></h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Nueva sección: Gráfico Monto Invertido vs Posible Retorno -->
+                <div class="carousel-item">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <canvas id="monto-retorno-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Nueva sección: Gráfico Total Ventas vs Productos Vendidos -->
+                <div class="carousel-item">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <canvas id="ventas-productos-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+        <!-- Fin del carrusel -->
+
+        <!-- API de StockX -->
+        <div class="row mt-5">
             <div class="col-md-12">
                 <div class="card mb-3">
                     <div class="card-header">Integración con API de StockX</div>
                     <div class="card-body">
-                        <p>Aquí deberiamos poder revisar el estado de los encargos y comparar precios en StockX.</p>
+                        <p>Aquí deberíamos poder revisar el estado de los encargos y comparar precios en StockX.</p>
                         <form id="stockx-form">
                             <div class="mb-3">
                                 <label for="stockx-search" class="form-label">Buscar en StockX</label>

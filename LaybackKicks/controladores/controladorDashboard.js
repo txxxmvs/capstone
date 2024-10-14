@@ -35,11 +35,13 @@ const obtenerDatosDashboard = (req, res) => {
 
         let montoInvertido = 0;
         let posibleRetorno = 0;
+        let totalProductos = 0;  // Nueva métrica para contar productos
 
         // Calcular monto invertido y posible retorno sumando los valores
         productos.rows.forEach(producto => {
             montoInvertido += producto.precio_compra * producto.cantidad_original;
             posibleRetorno += producto.precio_venta * producto.cantidad_original;
+            totalProductos += producto.cantidad_original;  // Contamos los productos
         });
 
         // Ejecutar la consulta para ventas
@@ -50,14 +52,28 @@ const obtenerDatosDashboard = (req, res) => {
             }
 
             let totalVentas = 0;
+            let totalCantidadVendida = 0;
+            let sumaPreciosVenta = 0;  // Para calcular el promedio
 
             // Calcular el total de ventas sumando los valores
             ventasResult.rows.forEach(venta => {
                 totalVentas += venta.precio_final * venta.cantidad_venta;
+                totalCantidadVendida += venta.cantidad_venta;
+                sumaPreciosVenta += venta.precio_final * venta.cantidad_venta;
             });
 
+            const promedioPrecioVenta = totalCantidadVendida ? sumaPreciosVenta / totalCantidadVendida : 0;
+            const gananciaEstimada = posibleRetorno - montoInvertido;
+
             // Enviar la respuesta con los resultados
-            res.json({ montoInvertido, posibleRetorno, totalVentas });
+            res.json({
+                montoInvertido,
+                posibleRetorno,
+                totalVentas,
+                totalProductos,  // Nueva métrica
+                gananciaEstimada,  // Nueva métrica
+                promedioPrecioVenta  // Nueva métrica
+            });
         });
     });
 };
