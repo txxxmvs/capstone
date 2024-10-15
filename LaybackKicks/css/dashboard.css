@@ -46,12 +46,28 @@ h2 {
     padding: 10px;
     text-align: left;
     border: 1px solid #ddd;
-    color: #ffffff;
+    color: #000000; /* Cambiar el color del texto a negro */
+}
+
+.table td {
+    background-color: #ffffff; /* Fondo blanco para las celdas */
+    color: #000000; /* Texto negro */
 }
 
 .table th {
     background-color: #1e3a8a;
     color: #ffffff;
+}
+
+/* Contenedor con fondo blanco y bordes redondeados */
+.table-container {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 20px 0;
+    max-width: 800px; /* Ajustar el ancho del contenedor */
+    margin: 0 auto;
 }
 
 /* Botones */

@@ -131,4 +131,25 @@ $(document).ready(function () {
             });
         }
     });
+
+    // Actualizar el rol del usuario
+    $(document).on('click', '.guardar-rol', function () {
+        const idUsuario = $(this).data('id');
+        const nuevoRol = $(this).siblings('.rol-selector').val(); // Obtener el valor seleccionado del rol
+
+        $.ajax({
+            url: `http://localhost:3000/api/usuarios/${idUsuario}`,
+            type: 'PUT',
+            contentType: 'application/json',
+            data: JSON.stringify({ rol: nuevoRol }),
+            success: function (response) {
+                alert('Rol del usuario actualizado con éxito');
+                cargarUsuarios(); // Recargar la lista de usuarios después de actualizar
+            },
+            error: function (xhr, status, error) {
+                alert('Error al actualizar el rol del usuario.');
+            }
+        });
+    });
+
 });

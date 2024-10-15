@@ -68,6 +68,19 @@ $(document).ready(function() {
         });
     }
 
+    $('#btn-filtrar').click(function() {
+        cargarProductos();
+    });
+    
+    $('#btn-limpiar').click(function() {
+        $('#filtro-id').val(''); 
+        $('#filtro-marca').val(''); 
+        $('#filtro-talla').val('');
+        $('#filtro-condicion').val('');
+        
+        cargarProductos();
+    });
+
     // Procesar el formulario de nuevo producto
     $('#nuevo-producto').submit(function(e) {
         e.preventDefault();
