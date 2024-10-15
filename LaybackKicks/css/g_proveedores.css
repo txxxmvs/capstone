@@ -1,3 +1,11 @@
+:root {
+    --color-principal: #1e3a8a; /* Color azul oscuro */
+    --color-secundario: #3b82f6; /* Color azul claro */
+    --color-acento: #ffffff;     /* Color blanco */
+    --color-texto: #111827;      /* Color negro oscuro */
+    --color-hover: #2563eb;      /* Color de hover para botones */
+}
+
 body {
     font-family: 'Arial', sans-serif;
     background-image: url('../img/fondo.png'); 
@@ -67,24 +75,72 @@ td:nth-child(2) {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-
-/* Botones */
+/* Botón principal */
 .btn-primary {
-    margin-top: 20px;
-    background-color: #3b82f6;
-    border-color: #3b82f6;
+    background-color: var(--color-secundario);
+    border-color: var(--color-secundario);
+    color: var(--color-acento);
     font-weight: bold;
-    padding: 10px 20px;
+    padding: 10px 15px;
     transition: background-color 0.3s ease;
 }
 
 .btn-primary:hover {
-    background-color: #2563eb;
-    border-color: #2563eb;
+    background-color: var(--color-hover);
+    border-color: var(--color-hover);
+}
+
+/* Botón de advertencia (Editar) */
+.btn-warning {
+    background-color: #f0ad4e;
+    color: var(--color-acento);
+    border: none;
+    padding: 10px 15px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-warning:hover {
+    background-color: #ec971f;
+}
+
+/* Botón de peligro (Eliminar) */
+.btn-danger {
+    background-color: #d9534f;
+    color: var(--color-acento);
+    border: none;
+    padding: 10px 15px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-danger:hover {
+    background-color: #c9302c;
+}
+
+/* Espaciado entre botones */
+.btn {
+    margin-bottom: 10px;
 }
 
 /* Formulario de búsqueda */
 .filtro-busqueda select, .filtro-busqueda input {
     margin-right: 10px;
     padding: 5px;
+}
+
+.form-control {
+    color: var(--color-texto);
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: var(--color-principal);
+    box-shadow: 0 0 5px rgba(30, 58, 138, 0.5); /* Sombra en focus */
+}
+
+.form-label {
+    font-weight: bold;
+    color: var(--color-texto);
 }
