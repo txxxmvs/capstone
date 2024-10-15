@@ -73,3 +73,9 @@ h2 {
     margin-right: 10px;
     padding: 5px;
 }
+
+canvas {
+    background-color: white;
+    width: 100% !important;
+    height: 400px !important;  /* Ajustar la altura si es necesario */
+}
