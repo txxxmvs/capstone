@@ -144,3 +144,8 @@ td:nth-child(2) {
     font-weight: bold;
     color: var(--color-texto);
 }
+
+#proveedor-form .btn-primary {
+    width: 100%;  /* Asegura que el botón ocupe todo el ancho del contenedor */
+    margin-top: 15px;  /* Añade espacio entre el botón y el campo de teléfono */
+}
