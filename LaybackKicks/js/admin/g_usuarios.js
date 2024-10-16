@@ -14,13 +14,17 @@ $(document).ready(function () {
                             <td>${usuario.email}</td>
                             <td>${usuario.rol}</td>
                             <td>
-                                <button class="btn btn-warning btn-sm cambiar-contraseña" data-id="${usuario.id_usuario}">Cambiar Contraseña</button>
-                                <button class="btn btn-danger btn-sm eliminar" data-id="${usuario.id_usuario}">Eliminar</button>
-                                <select class="form-select form-select-sm rol-selector" data-id="${usuario.id_usuario}" style="width: auto; display: inline-block;">
-                                    <option value="admin" ${usuario.rol === 'admin' ? 'selected' : ''}>Admin</option>
-                                    <option value="vendedor" ${usuario.rol === 'vendedor' ? 'selected' : ''}>Vendedor</option>
-                                </select>
-                                <button class="btn btn-primary btn-sm guardar-rol" data-id="${usuario.id_usuario}" style="display: inline-block;">Guardar</button>
+                                <div class="acciones">
+                                    <button class="btn btn-warning btn-sm cambiar-contraseña" data-id="${usuario.id_usuario}">Cambiar Contraseña</button>
+                                    <button class="btn btn-danger btn-sm eliminar" data-id="${usuario.id_usuario}">Eliminar</button>
+                                </div>
+                                <div class="rol-guardar">
+                                    <select class="form-select form-select-sm rol-selector" data-id="${usuario.id_usuario}">
+                                        <option value="admin" ${usuario.rol === 'admin' ? 'selected' : ''}>Admin</option>
+                                        <option value="vendedor" ${usuario.rol === 'vendedor' ? 'selected' : ''}>Vendedor</option>
+                                    </select>
+                                    <button class="btn btn-primary btn-sm guardar-rol" data-id="${usuario.id_usuario}">Guardar</button>
+                                </div>
                             </td>
                         </tr>
                     `;
@@ -32,7 +36,7 @@ $(document).ready(function () {
             }
         });
     }
-
+    
     // Mostrar modal para cambiar contraseña
     $(document).on('click', '.cambiar-contraseña', function () {
         const idUsuario = $(this).data('id');

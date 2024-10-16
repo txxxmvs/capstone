@@ -3,7 +3,7 @@ const axios = require('axios');
 
 // Obtener todos los productos
 const obtenerProductos = (req, res) => {
-    pool.query('SELECT * FROM productos', (err, result) => {
+    pool.query('SELECT * FROM productos ORDER BY id_producto DESC', (err, result) => {
         if (err) {
             console.error('Error al obtener productos:', err);
             res.status(500).json({ message: 'Error al obtener productos' });

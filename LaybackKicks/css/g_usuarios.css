@@ -123,15 +123,18 @@ h2 {
     background-color: #ec971f;
 }
 
-.acciones {
-    display: flex;
-    flex-direction: row;
-    gap: 5px; 
-    margin-bottom: 5px; 
+.acciones, .rol-guardar {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Divide el espacio en dos columnas iguales */
+    gap: 10px; /* Añade espacio entre los elementos */
+    margin-bottom: 10px;
 }
 
 .rol-guardar {
-    display: flex;
-    flex-direction: row;
-    gap: 25px; 
+    margin-top: 10px; /* Asegura que haya un espacio entre las filas */
+}
+
+.acciones button, .rol-guardar select, .rol-guardar button {
+    width: 100%; /* Asegura que los botones y el select ocupen todo el ancho de su columna */
+    text-align: center; /* Centra el texto en los botones */
 }
