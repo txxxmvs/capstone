@@ -155,28 +155,64 @@
         </div>
         <!-- Fin del carrusel -->
 
-        <!-- API de StockX -->
-        <div class="row mt-5">
-            <div class="col-md-12">
-                <div class="card mb-3">
-                    <div class="card-header">Integración con API de StockX</div>
-                    <div class="card-body">
-                        <p>Aquí deberíamos poder revisar el estado de los encargos y comparar precios en StockX.</p>
-                        <form id="stockx-form">
-                            <div class="mb-3">
-                                <label for="stockx-search" class="form-label">Buscar en StockX</label>
-                                <input type="text" class="form-control" id="stockx-search" placeholder="Ingresa el nombre o SKU del sneaker" required>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Buscar</button>
-                        </form>
-
-                        <div id="stockx-result" class="mt-3">
-                            <!-- resultado de la api -->
-                        </div>
-                    </div>
-                </div>
+        <!-- Modificación de la tabla para incluir el botón de avanzar estado -->
+    <h2 class="text-center">Listado de Productos</h2>
+    <div class="table-container">
+        <div class="row">
+            <div class="col-md-4">
+                <label for="month-select">Mes</label>
+                <select id="month-select" class="form-control">
+                    <option value="1">Enero</option>
+                    <option value="2">Febrero</option>
+                    <option value="3">Marzo</option>
+                    <option value="4">Abril</option>
+                    <option value="5">Mayo</option>
+                    <option value="6">Junio</option>
+                    <option value="7">Julio</option>
+                    <option value="8">Agosto</option>
+                    <option value="9">Septiembre</option>
+                    <option value="10">Octubre</option>
+                    <option value="11">Noviembre</option>
+                    <option value="12">Diciembre</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label for="year-select">Año</label>
+                <select id="year-select" class="form-control">
+                    <option value="2023">2023</option>
+                    <option value="2024">2024</option>
+                    <option value="2025">2025</option>
+                    <option value="2026">2026</option>
+                    <option value="2027">2027</option>
+                    <option value="2028">2028</option>
+                    <option value="2029">2029</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label for="estado-select">Estado Logístico</label>
+                <select id="estado-select" class="form-control">
+                    <option value="">Todos los estados</option>
+                    <option value="En camino">En camino</option>
+                    <option value="En bodega">En bodega</option>
+                    <option value="Pagándose">Pagándose</option>
+                    <option value="Cancelada">Cancelada</option>
+                </select>
             </div>
         </div>
+        <button id="filter-button-productos" class="btn btn-primary">Filtrar</button>
+        
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID Producto</th>
+                    <th>Estado Logístico</th>
+                    <th>Acciones</th> 
+                </tr>
+            </thead>
+            <tbody id="productos-list">
+                <!-- Aquí se insertan los datos de la API -->
+            </tbody>
+        </table>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

@@ -39,9 +39,28 @@ $(document).ready(function() {
             url: 'http://localhost:3000/api/productos',
             method: 'GET',
             success: function(productos) {
-                productos.sort((a, b) => b.id_producto - a.id_producto);
+                // Obtener valores de los filtros
+                const filtroMarca = $('#filtro-marca').val();
+                const filtroId = $('#filtro-id').val();  
+                const filtroTalla = $('#filtro-talla').val();  
+                const filtroCondicion = $('#filtro-condicion').val();
+    
+                // Filtrar productos basados en los filtros seleccionados
+                const productosFiltrados = productos.filter(producto => {
+                    return (filtroMarca === '' || producto.marca.toLowerCase() === filtroMarca.toLowerCase()) &&
+                           (filtroId === '' || producto.id_producto == filtroId) &&
+                           (filtroTalla === '' || producto.talla.toString() === filtroTalla) && 
+                           (filtroCondicion === '' || producto.condicion.toLowerCase() === filtroCondicion.toLowerCase());
+                });
+
+                            // Ordenar los productos por id_producto de mayor a menor si no hay filtros
+                if (filtroMarca === '' && filtroId === '' && filtroTalla === '' && filtroCondicion === '') {
+                    productosFiltrados.sort((a, b) => b.id_producto - a.id_producto);
+                }
+    
+                // Ordenar y mostrar los productos filtrados
                 let filas = '';
-                productos.forEach(function(producto) {
+                productosFiltrados.forEach(function(producto) {
                     filas += `
                         <tr>
                             <td>${producto.id_producto}</td>
