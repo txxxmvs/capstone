@@ -1,3 +1,12 @@
+/* Colores de la paleta */
+:root {
+    --color-principal: #1e3a8a; 
+    --color-secundario: #3b82f6;
+    --color-acento: #ffffff;     
+    --color-texto: #111827;     
+    --color-hover: #2563eb;     
+}
+
 body {
     font-family: 'Arial', sans-serif;
     background-image: url('../img/fondo.png'); 
@@ -48,26 +57,84 @@ h2 {
 }
 
 .table th {
-    background-color: #1e3a8a;
-    color: #ffffff;
+    background-color: var(--color-principal);
+    color: var(--color-acento);
+}
+
+.table td {
+    border: 1px solid #ddd;
+    color: var(--color-texto);
+}
+
+.table td .btn {
+    display: block; /* Para que cada botón ocupe una fila */
+    margin-bottom: 5px; /* Espaciado entre los botones */
+    width: 100%; /* Asegura que los botones ocupen todo el ancho de la celda */
+    text-align: center;
+    padding: 8px 0;
 }
 
 /* Botones */
 .btn-primary {
-    background-color: #3b82f6;
-    border-color: #3b82f6;
+    background-color: var(--color-secundario) !important;
+    border-color: var(--color-secundario) !important;
     font-weight: bold;
     padding: 10px 20px;
     transition: background-color 0.3s ease;
 }
 
 .btn-primary:hover {
-    background-color: #2563eb;
-    border-color: #2563eb;
+    background-color: var(--color-hover) !important;
+    border-color: var(--color-hover) !important;
+}
+
+.form-section label, .form-section input, .form-section select, .form-control {
+    color: var(--color-texto) !important;
+    background-color: #fff !important;
 }
 
 /* Formulario de búsqueda */
 .filtro-busqueda select, .filtro-busqueda input {
     margin-right: 10px;
     padding: 5px;
+}
+
+.btn-danger {
+    background-color: #d9534f;
+    color: white;
+    border: none;
+    font-size: 14px;
+    width: auto;
+}
+
+.btn:hover {
+    opacity: 0.9;
+}
+
+.btn-warning {
+    background-color: #f0ad4e;
+    color: white;
+    border: none;
+    font-size: 14px;
+    width: auto;
+}
+
+.btn-warning:hover {
+    background-color: #ec971f;
+}
+
+.acciones, .rol-guardar {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Divide el espacio en dos columnas iguales */
+    gap: 10px; /* Añade espacio entre los elementos */
+    margin-bottom: 10px;
+}
+
+.rol-guardar {
+    margin-top: 10px; /* Asegura que haya un espacio entre las filas */
+}
+
+.acciones button, .rol-guardar select, .rol-guardar button {
+    width: 100%; /* Asegura que los botones y el select ocupen todo el ancho de su columna */
+    text-align: center; /* Centra el texto en los botones */
 }

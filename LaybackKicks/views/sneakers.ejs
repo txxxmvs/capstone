@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo de Zapatillas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sixtyfour+Convergence&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css2/navbar.css">
+    <link rel="stylesheet" href="/css2/styles2.css">
+    
+    
+</head>
+<body>
+
+    <!-- Placeholder para el navbar -->
+    <div id="navbar-placeholder"><%- include('navbar') %></div>
+
+    <!-- Contenedor principal -->
+    <div class="container mt-5">
+        <h1>LaybackKicks x StockX API</h1>
+
+        <!-- Formulario de búsqueda -->
+        <form class="form-busqueda" action="/search" method="get">
+            <input type="text" name="q" placeholder="Buscar zapatillas..." class="form-control">
+            <button type="submit" class="btn btn-primary">Buscar</button>
+        </form>
+
+        <!-- Filas de zapatillas -->
+        <div class="row">
+            <% shoes.forEach(function(shoe) { %>
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <img src="<%= shoe.thumbnail %>" class="card-img-top" alt="<%= shoe.shoeName %>">
+                        <div class="card-body">
+                            <h5 class="card-title"><%= shoe.shoeName %></h5>
+                            <p><strong>Colorway:</strong> <%= shoe.colorway %></p>
+                            <p><strong>SKU:</strong> <%= shoe.styleID %></p>
+                            <p><strong>Retail Price:</strong> $<%= shoe.retailPrice %></p>
+                            <p><strong>Release Date:</strong> <%= shoe.releaseDate %></p>
+                            <p><strong>Lowest Resell Price:</strong></p>
+                            <ul>
+                                <li><strong>StockX:</strong> $<%= shoe.lowestResellPrice?.stockX || 'N/A' %></li>
+                                <li><strong>Goat:</strong> $<%= shoe.lowestResellPrice?.goat || 'N/A' %></li>
+                                <li><strong>Flight Club:</strong> $<%= shoe.lowestResellPrice?.flightClub || 'N/A' %></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+
+        <!-- Script para el navbar -->
+        <script src="../js/admin/navbar.js"></script>
+    </div>
+
+    <!-- Scripts de Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

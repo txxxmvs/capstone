@@ -39,9 +39,28 @@ $(document).ready(function() {
             url: 'http://localhost:3000/api/productos',
             method: 'GET',
             success: function(productos) {
-                productos.sort((a, b) => b.id_producto - a.id_producto);
+                // Obtener valores de los filtros
+                const filtroMarca = $('#filtro-marca').val();
+                const filtroId = $('#filtro-id').val();  
+                const filtroTalla = $('#filtro-talla').val();  
+                const filtroCondicion = $('#filtro-condicion').val();
+    
+                // Filtrar productos basados en los filtros seleccionados
+                const productosFiltrados = productos.filter(producto => {
+                    return (filtroMarca === '' || producto.marca.toLowerCase() === filtroMarca.toLowerCase()) &&
+                           (filtroId === '' || producto.id_producto == filtroId) &&
+                           (filtroTalla === '' || producto.talla.toString() === filtroTalla) && 
+                           (filtroCondicion === '' || producto.condicion.toLowerCase() === filtroCondicion.toLowerCase());
+                });
+
+                // Ordenar los productos por id_producto de mayor a menor si no hay filtros
+                if (filtroMarca === '' && filtroId === '' && filtroTalla === '' && filtroCondicion === '') {
+                    productosFiltrados.sort((a, b) => b.id_producto - a.id_producto);
+                }
+    
+                // Ordenar y mostrar los productos filtrados
                 let filas = '';
-                productos.forEach(function(producto) {
+                productosFiltrados.forEach(function(producto) {
                     filas += `
                         <tr>
                             <td>${producto.id_producto}</td>
@@ -67,6 +86,19 @@ $(document).ready(function() {
             }
         });
     }
+
+    $('#btn-filtrar').click(function() {
+        cargarProductos();
+    });
+    
+    $('#btn-limpiar').click(function() {
+        $('#filtro-id').val(''); 
+        $('#filtro-marca').val(''); 
+        $('#filtro-talla').val('');
+        $('#filtro-condicion').val('');
+        
+        cargarProductos();
+    });
 
     // Procesar el formulario de nuevo producto
     $('#nuevo-producto').submit(function(e) {
@@ -186,6 +218,76 @@ $(document).ready(function() {
             }
         });
     });
+
+    $(document).on('click', '.editar', function() {
+        const idProducto = $(this).data('id');
+        
+        // Hacer una solicitud para obtener la información del producto por ID
+        $.ajax({
+            url: `http://localhost:3000/api/productos/${idProducto}`,
+            method: 'GET',
+            success: function(producto) {
+                // Llenar los campos del modal con la información del producto
+                $('#edit-id-producto').val(producto.id_producto);
+                $('#edit-marca').val(producto.marca);
+                $('#edit-modelo').val(producto.modelo);
+                $('#edit-talla').val(producto.talla);
+                $('#edit-condicion').val(producto.condicion);
+                $('#edit-cantidad').val(producto.cantidad);
+                $('#edit-precio-compra').val(formatearPrecio(producto.precio_compra));
+                $('#edit-precio-venta').val(formatearPrecio(producto.precio_venta));
+                $('#edit-fecha-adq').val(producto.fecha_adquisicion);
+    
+                // Mostrar el modal
+                $('#editModal').modal('show');
+            },
+            error: function(error) {
+                console.error('Error al obtener el producto para editar', error);
+                alert('Error al cargar el producto para editar.');
+            }
+        });
+    });
+    
+    // Procesar el formulario de edición de producto
+    $('#editar-producto').submit(function(e) {
+        e.preventDefault();
+    
+        const idProducto = $('#edit-id-producto').val();
+        const productoActualizado = {
+            marca: $('#edit-marca').val().trim(),
+            modelo: $('#edit-modelo').val().trim(),
+            talla: $('#edit-talla').val().trim(),
+            condicion: $('#edit-condicion').val().trim(),
+            cantidad: $('#edit-cantidad').val().trim(),
+            precio_compra: limpiarPrecio($('#edit-precio-compra').val().trim()),
+            precio_venta: limpiarPrecio($('#edit-precio-venta').val().trim()),
+            fecha_adq: $('#edit-fecha-adq').val().trim(),
+        };
+    
+        // Validar que todos los campos estén completos
+        if (!productoActualizado.marca || !productoActualizado.modelo || !productoActualizado.talla || !productoActualizado.condicion || !productoActualizado.cantidad || !productoActualizado.precio_compra || !productoActualizado.precio_venta || !productoActualizado.fecha_adq) {
+            alert('Por favor, completa todos los campos.');
+            return;
+        }
+    
+        // Realizar la solicitud para actualizar el producto
+        $.ajax({
+            url: `http://localhost:3000/api/productos/${idProducto}`,
+            method: 'PUT',
+            contentType: 'application/json',
+            data: JSON.stringify(productoActualizado),
+            success: function(response) {
+                alert('Producto actualizado con éxito');
+                $('#editModal').modal('hide');
+                cargarProductos();  // Recargar la lista de productos
+            },
+            error: function(error) {
+                console.error('Error al actualizar el producto', error);
+                alert('Error al actualizar el producto.');
+            }
+        });
+    });
+    
 
     // Eliminar producto
     $(document).on('click', '.eliminar', function() {

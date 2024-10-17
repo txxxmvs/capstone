@@ -28,32 +28,65 @@ $(document).ready(function() {
             url: 'http://localhost:3000/api/productos',
             method: 'GET',
             success: function(productos) {
-                productos.sort((a, b) => b.id_producto - a.id_producto);
-                let filas = '';
-                productos.forEach(function(producto) {
-                    filas += `
-                        <tr>
-                            <td>${producto.id_producto}</td>
-                            <td>${producto.marca}</td>
-                            <td>${producto.modelo}</td>
-                            <td>${producto.talla}</td>
-                            <td>${producto.condicion}</td>
-                            <td>${producto.cantidad}</td>
-                            <td>${formatearPrecio(producto.precio_compra)}</td>
-                            <td>${formatearPrecio(producto.precio_venta)}</td>
-                            <td>
-                                ${producto.cantidad > 0 ? `<button class="btn btn-success btn-sm vender" data-id="${producto.id_producto}" data-cantidad="${producto.cantidad}">Vender</button>` : ''}
-                            </td>
-                        </tr>
-                    `;
-                });
-                $('#product-list').html(filas);
+    
+                 // Obtener valores de los filtros
+                 const filtroMarca = $('#filtro-marca').val();
+                 const filtroId = $('#filtro-id').val();  
+                 const filtroTalla = $('#filtro-talla').val();  
+                 const filtroCondicion = $('#filtro-condicion').val();
+     
+                 // Filtrar productos basados en los filtros seleccionados
+                 const productosFiltrados = productos.filter(producto => {
+                     return (filtroMarca === '' || producto.marca.toLowerCase() === filtroMarca.toLowerCase()) &&
+                            (filtroId === '' || producto.id_producto == filtroId) &&
+                            (filtroTalla === '' || producto.talla.toString() === filtroTalla) && 
+                            (filtroCondicion === '' || producto.condicion.toLowerCase() === filtroCondicion.toLowerCase());
+                 });
+    
+                 // Ordenar los productos por id_producto de mayor a menor si no hay filtros
+                 if (filtroMarca === '' && filtroId === '' && filtroTalla === '' && filtroCondicion === '') {
+                     productosFiltrados.sort((a, b) => b.id_producto - a.id_producto);
+                 }
+    
+                 // Generar filas para los productos filtrados
+                 let filas = '';
+                 productosFiltrados.forEach(function(producto) {
+                     filas += `
+                         <tr>
+                             <td>${producto.id_producto}</td>
+                             <td>${producto.marca}</td>
+                             <td>${producto.modelo}</td>
+                             <td>${producto.talla}</td>
+                             <td>${producto.condicion}</td>
+                             <td>${producto.cantidad}</td>
+                             <td>${formatearPrecio(producto.precio_compra)}</td>
+                             <td>${formatearPrecio(producto.precio_venta)}</td>
+                             <td>
+                                 ${producto.cantidad > 0 ? `<button class="btn btn-success btn-sm vender" data-id="${producto.id_producto}" data-cantidad="${producto.cantidad}">Vender</button>` : ''}
+                             </td>
+                         </tr>
+                     `;
+                 });
+                 $('#product-list').html(filas);
             },
             error: function(error) {
                 console.error('Error al cargar los productos', error);
             }
         });
     }
+    
+    $('#btn-filtrar').click(function() {
+        cargarProductos();
+    });
+    
+    $('#btn-limpiar').click(function() {
+        $('#filtro-id').val(''); 
+        $('#filtro-marca').val(''); 
+        $('#filtro-talla').val('');
+        $('#filtro-condicion').val('');
+        
+        cargarProductos();
+    });
 
     // Procesar el formulario de nuevo producto
     $('#nuevo-producto').submit(function(e) {

@@ -16,6 +16,54 @@
 
         <div class="row clearfix">
             <div id="stock-section" class="col-md-8 section-box">
+                <div id="filtros">
+
+                    <input type="number" id="filtro-id" placeholder="Buscar por ID" min="1">
+                    
+                    <select id="filtro-marca">
+                        <option value="">Todas las marcas</option>
+                        <option value="Adidas">Adidas</option>
+                        <option value="Converse">Converse</option>
+                        <option value="Crocs">Crocs</option>
+                        <option value="New Balance">New Balance</option>
+                        <option value="Nike">Nike</option>
+                        <option value="Puma">Puma</option>
+                        <option value="Rebook">Rebook</option>
+                        <option value="Vans">Vans</option>
+
+                    </select>
+                
+                    <select id="filtro-talla">
+                        <option value="">Todas las tallas</option>
+                        <option value="6">6</option>
+                        <option value="6.5">6.5</option>
+                        <option value="7">7</option>
+                        <option value="7.5">7.5</option>
+                        <option value="8">8</option>
+                        <option value="8.5">8.5</option>
+                        <option value="9">9</option>
+                        <option value="9.5">9.5</option>
+                        <option value="10">10</option>
+                        <option value="10.5">10.5</option>
+                        <option value="11">11</option>
+                        <option value="11.5">11.5</option>
+                        <option value="12">12</option>
+                        <option value="12.5">12.5</option>
+                        <option value="13">13</option>
+                        <option value="13.5">13.5</option>
+                        <option value="14">14</option>
+
+                    </select>
+                
+                    <select id="filtro-condicion">
+                        <option value="">Todas las condiciones</option>
+                        <option value="nuevo">Nuevo</option>
+                        <option value="usado">Usado</option>
+                    </select>
+                    
+                    <button id="btn-filtrar">Filtrar</button>
+                    <button id="btn-limpiar">Limpiar filtros</button>
+                </div>
                 <table class="table table-striped">
                     <thead>
                         <tr>
@@ -39,15 +87,42 @@
                 <form id="nuevo-producto">
                     <div class="mb-3">
                         <label for="marca" class="form-label">Marca</label>
-                        <input type="text" class="form-control" id="marca" placeholder="Ej: Nike" required>
-                    </div>
+                        <select class="form-select" id="marca" required>
+                            <option value="Adidas">Adidas</option>
+                            <option value="Converse">Converse</option>
+                            <option value="Crocs">Crocs</option>
+                            <option value="New Balance">New Balance</option>
+                            <option value="Nike">Nike</option>
+                            <option value="Puma">Puma</option>
+                            <option value="Rebook">Rebook</option>
+                            <option value="Vans">Vans</option>
+                        </select>
+                    </div>    
                     <div class="mb-3">
                         <label for="modelo" class="form-label">Modelo</label>
-                        <input type="text" class="form-control" id="modelo" placeholder="Ej: Jordan 1 ''" required>
+                        <input type="text" class="form-control" id="modelo" placeholder="Ej: Jordan 1 ''...''" required>
                     </div>
                     <div class="mb-3">
                         <label for="talla" class="form-label">Talla</label>
-                        <input type="number" class="form-control" id="talla" placeholder="0" min="0" required>
+                        <select class="form-select" id="talla" required>
+                            <option value="6">6</option>
+                            <option value="6.5">6.5</option>
+                            <option value="7">7</option>
+                            <option value="7.5">7.5</option>
+                            <option value="8">8</option>
+                            <option value="8.5">8.5</option>
+                            <option value="9">9</option>
+                            <option value="9.5">9.5</option>
+                            <option value="10">10</option>
+                            <option value="10.5">10.5</option>
+                            <option value="11">11</option>
+                            <option value="11.5">11.5</option>
+                            <option value="12">12</option>
+                            <option value="12.5">12.5</option>
+                            <option value="13">13</option>
+                            <option value="13.5">13.5</option>
+                            <option value="14">14</option>
+                        </select>
                     </div>
                     <div class="mb-3">
                         <label for="condicion" class="form-label">Condicion</label>
@@ -62,88 +137,39 @@
                     </div>
                     <div class="mb-3">
                         <label for="precio-compra" class="form-label">Precio de Compra</label>
-                        <input type="text" class="form-control" id="precio-compra" placeholder="0" min="0" required>
+                        <input type="text" class="form-control" id="precio-compra" placeholder="$" min="0" required>
                     </div>
                     <div class="mb-3">
                         <label for="precio-venta" class="form-label">Precio Estimado de Venta</label>
-                        <input type="text" class="form-control" id="precio-venta" placeholder="0" min="0" required>
+                        <input type="text" class="form-control" id="precio-venta" placeholder="$" min="0" required>
                     </div>
                     <div class="mb-3">
                         <label for="fecha-adq" class="form-label">Fecha de Adquisición</label>
                         <input type="date" class="form-control" id="fecha-adq" required>
                     </div>
                     <button type="submit" class="btn btn-primary w-100">Agregar</button>
+                    <div class="mb-3">
+                        <input type="checkbox" id="publicarInstagram" name="publicarInstagram" onchange="toggleInstagramFields()">
+                        <label for="publicarInstagram">Publicar en Instagram</label>
+                    </div>
+
+                    <div id="instagramFields" style="display: none;">
+                        <div class="mb-3">
+                            <label for="instagramDescripcion" class="form-label">Descripción para Instagram</label>
+                            <textarea class="form-control" id="instagramDescripcion" rows="3" placeholder="Escribe una descripción..."></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="instagramImagenes" class="form-label">Subir Imágenes</label>
+                            <input type="file" class="form-control" id="instagramImagenes" multiple>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Actualizar</button>
                 </form>
             </div>
         </div>
     </div>
-    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editModalLabel">Editar Producto</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="editar-producto">
-                        <input type="hidden" id="edit-id-producto">
-                        <div class="mb-3">
-                            <label for="edit-marca" class="form-label">Marca</label>
-                            <input type="text" class="form-control" id="edit-marca" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="edit-modelo" class="form-label">Modelo</label>
-                            <input type="text" class="form-control" id="edit-modelo" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="edit-talla" class="form-label">Talla</label>
-                            <input type="number" class="form-control" id="edit-talla" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="edit-condicion" class="form-label">Condicion</label>
-                            <select class="form-select" id="edit-condicion" required>
-                                <option value="nuevo">Nuevo</option>
-                                <option value="usado">Usado</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="edit-cantidad" class="form-label">Cantidad</label>
-                            <input type="number" class="form-control" id="edit-cantidad" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="edit-precio-compra" class="form-label">Precio de Compra</label>
-                            <input type="text" class="form-control" id="edit-precio-compra" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="edit-precio-venta" class="form-label">Precio Estimado de Venta</label>
-                            <input type="text" class="form-control" id="edit-precio-venta" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="edit-fecha-adq" class="form-label">Fecha de Adquisición</label>
-                            <input type="date" class="form-control" id="edit-fecha-adq" required>
-                        </div>
-                        <div class="mb-3">
-    <input type="checkbox" id="publicarInstagram" name="publicarInstagram" onchange="toggleInstagramFields()">
-    <label for="publicarInstagram">Publicar en Instagram</label>
-</div>
 
-<div id="instagramFields" style="display: none;">
-    <div class="mb-3">
-        <label for="instagramDescripcion" class="form-label">Descripción para Instagram</label>
-        <textarea class="form-control" id="instagramDescripcion" rows="3" placeholder="Escribe una descripción..."></textarea>
-    </div>
-    <div class="mb-3">
-        <label for="instagramImagenes" class="form-label">Subir Imágenes</label>
-        <input type="file" class="form-control" id="instagramImagenes" multiple>
-    </div>
-</div>
-
-                        <button type="submit" class="btn btn-primary">Actualizar</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <div class="modal fade" id="ventaModal" tabindex="-1" aria-labelledby="ventaModalLabel" aria-hidden="true">
         <div class="modal-dialog">
