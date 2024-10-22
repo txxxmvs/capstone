@@ -16,6 +16,7 @@ const obtenerDatosDashboard = (req, res) => {
         FROM productos
         WHERE EXTRACT(MONTH FROM fecha_adquisicion) = $1 
         AND EXTRACT(YEAR FROM fecha_adquisicion) = $2
+        AND estado_logistico != 'Cancelada';
     `;
 
     // Consulta para obtener ventas del mes y año
