@@ -29,6 +29,8 @@ document.getElementById('report-form').addEventListener('submit', function(event
 
       if (tipoReporte === 'vendidos') {
         htmlContent += `<th>ID Venta</th><th>ID Usuario</th><th>ID Producto</th><th>Fecha Venta</th><th>Cantidad</th><th>Precio Venta Real</th><th>Precio Compra</th><th>Fecha de Compra</th>`;
+      } else if (tipoReporte === 'cancelado') {
+        htmlContent += `<th>ID Producto</th><th>Marca</th><th>Modelo</th><th>Talla</th><th>Condición</th><th>Precio Compra</th><th>Precio Estimado Venta</th><th>Fecha de Compra</th><th>Cantidad</th><th>Estado Logístico</th>`;
       } else {
         htmlContent += `<th>ID Producto</th><th>Marca</th><th>Modelo</th><th>Talla</th><th>Condición</th><th>Precio Compra</th><th>Precio Estimado Venta</th><th>Fecha de Compra</th><th>Cantidad</th><th>Vendido</th>`;
       }
@@ -36,6 +38,10 @@ document.getElementById('report-form').addEventListener('submit', function(event
       htmlContent += `</tr></thead><tbody>`;
 
       data.forEach(row => {
+        if (tipoReporte === 'cancelado' && row.estado_logistico !== 'Cancelada') {
+          return; // Saltar productos que no están cancelados en este reporte
+        }
+
         htmlContent += `<tr>`;
         for (let key in row) {
           if (key.includes('fecha')) {

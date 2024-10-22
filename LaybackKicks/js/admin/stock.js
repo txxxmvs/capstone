@@ -61,24 +61,43 @@ $(document).ready(function() {
                 // Ordenar y mostrar los productos filtrados
                 let filas = '';
                 productosFiltrados.forEach(function(producto) {
-                    filas += `
-                        <tr>
-                            <td>${producto.id_producto}</td>
-                            <td>${producto.marca}</td>
-                            <td>${producto.modelo}</td>
-                            <td>${producto.talla}</td>
-                            <td>${producto.condicion}</td>
-                            <td>${producto.cantidad}</td>
-                            <td>${formatearPrecio(producto.precio_compra)}</td>
-                            <td>${formatearPrecio(producto.precio_venta)}</td>
-                            <td>
-                                <button class="btn btn-warning btn-sm editar" data-id="${producto.id_producto}">Editar</button>
-                                <button class="btn btn-danger btn-sm eliminar" data-id="${producto.id_producto}">Eliminar</button>
-                                ${producto.cantidad > 0 ? `<button class="btn btn-success btn-sm vender" data-id="${producto.id_producto}" data-cantidad="${producto.cantidad}">Vender</button>` : ''}
-                            </td>
-                        </tr>
-                    `;
+                    if (producto.estado_logistico === 'Cancelada') {
+                        filas += `
+                            <tr>
+                                <td>${producto.id_producto}</td>
+                                <td>${producto.marca}</td>
+                                <td>${producto.modelo}</td>
+                                <td>${producto.talla}</td>
+                                <td>${producto.condicion}</td>
+                                <td>${producto.cantidad}</td>
+                                <td>${formatearPrecio(producto.precio_compra)}</td>
+                                <td>${formatearPrecio(producto.precio_venta)}</td>
+                                <td>
+                                    <button class="btn btn-danger btn-sm eliminar" data-id="${producto.id_producto}">Eliminar</button>
+                                </td>
+                            </tr>
+                        `;
+                    } else {
+                        filas += `
+                            <tr>
+                                <td>${producto.id_producto}</td>
+                                <td>${producto.marca}</td>
+                                <td>${producto.modelo}</td>
+                                <td>${producto.talla}</td>
+                                <td>${producto.condicion}</td>
+                                <td>${producto.cantidad}</td>
+                                <td>${formatearPrecio(producto.precio_compra)}</td>
+                                <td>${formatearPrecio(producto.precio_venta)}</td>
+                                <td>
+                                    <button class="btn btn-warning btn-sm editar" data-id="${producto.id_producto}">Editar</button>
+                                    <button class="btn btn-danger btn-sm eliminar" data-id="${producto.id_producto}">Eliminar</button>
+                                    ${producto.cantidad > 0 ? `<button class="btn btn-success btn-sm vender" data-id="${producto.id_producto}" data-cantidad="${producto.cantidad}">Vender</button>` : ''}
+                                </td>
+                            </tr>
+                        `;
+                    }
                 });
+                
                 $('#product-list').html(filas);
             },
             error: function(error) {
