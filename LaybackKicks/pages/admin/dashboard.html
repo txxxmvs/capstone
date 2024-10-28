@@ -44,14 +44,12 @@
         </div>                
 
         <!-- Carrusel -->
-        <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+        <div id="carouselExampleIndicators" class="carousel slide" data-bs-interval="false">
             <div class="carousel-indicators">
                 <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
                 <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
                 <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
                 <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3" aria-label="Slide 4"></button>
-                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="4" aria-label="Slide 5"></button>
-                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="5" aria-label="Slide 6"></button>
             </div>
             <div class="carousel-inner">
                 <!-- Primera sección del carrusel -->
@@ -126,23 +124,6 @@
                     </div>
                 </div>
 
-                <!-- Nueva sección: Gráfico Monto Invertido vs Posible Retorno -->
-                <div class="carousel-item">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <canvas id="monto-retorno-chart"></canvas>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Nueva sección: Gráfico Total Ventas vs Productos Vendidos -->
-                <div class="carousel-item">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <canvas id="ventas-productos-chart"></canvas>
-                        </div>
-                    </div>
-                </div>
             </div>
             <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -155,7 +136,40 @@
         </div>
         <!-- Fin del carrusel -->
 
-        <!-- Modificación de la tabla para incluir el botón de avanzar estado -->
+            <!-- Sección del Grid después de los productos -->
+        <!-- Sección del Grid después de los productos -->
+    <h2 class="text-center mt-5">Dashboard Gráficos</h2>
+    <div class="dashboard-grid mt-3">
+        <!-- Gráfico Monto Invertido vs Posible Retorno -->
+        <div class="card">
+            <canvas id="monto-retorno-chart"></canvas>
+        </div>
+
+        <!-- Gráfico de Estado Logístico de los Productos -->
+        <div class="card">
+            <canvas id="estado-logistico-chart"></canvas>
+        </div>
+
+        <!-- Gráfico de Distribución de Ventas por Mes -->
+        <div class="card">
+            <canvas id="ventas-mensuales-chart"></canvas>
+        </div>
+
+        <div class="card" id="ventasPorMarcaCard">
+            <canvas id="ventas-por-marca-chart"></canvas>
+        </div>
+
+        <div class="card">
+            <canvas id="ventas-anuales-chart"></canvas>
+        </div>
+
+        <div class="card">
+            <canvas id="dispersion-precio-cantidad-chart"></canvas>
+        </div>
+              
+    </div>
+
+    <!-- Modificación de la tabla para incluir el botón de avanzar estado -->
     <h2 class="text-center">Listado de Productos</h2>
     <div class="table-container">
         <div class="row">
@@ -213,12 +227,17 @@
                 <!-- Aquí se insertan los datos de la API -->
             </tbody>
         </table>
+
+        <button id="enviar-alerta-btn" class="btn btn-primary">Enviar Alertas WhatsApp</button>
+
     </div>
+    
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../../js/admin/dashboard.js"></script>
-    <script src="../../js/admin/logistica.js"></script>
     <script src="../../js/admin/navbar.js"></script>
+    <script src="../../js/admin/logistica.js"></script>
+    <script src="../../js/admin/alertaWsp.js"></script>
 </body>
 </html>
