@@ -38,12 +38,24 @@ $(document).ready(function() {
             mostrarGraficoVentasAnuales(data.ventasAnuales);
             mostrarGraficoDispersionPrecioCantidad(data.dispersionPrecioCantidad);
 
+
         },
         error: function(error) {
             console.error('Error al cargar los datos del dashboard', error);
         }
     });
 }
+
+
+=======
+
+        },
+        error: function(error) {
+            console.error('Error al cargar los datos del dashboard', error);
+        }
+    });
+}
+
 
 
     // Función para mostrar el gráfico de Monto Invertido vs Posible Retorno
@@ -97,6 +109,7 @@ $(document).ready(function() {
         if (!estadoLogistico || Object.keys(estadoLogistico).length === 0) {
             console.error("Error: 'estadoLogistico' no contiene datos válidos.");
             return;
+
         }
 
         // Crear etiquetas y valores basados en los datos de estadoLogistico
@@ -140,6 +153,51 @@ $(document).ready(function() {
         if (ventasMensualesChart) {
             ventasMensualesChart.destroy();  // Destruir gráfico anterior si existe
         }
+
+        }
+
+        // Crear etiquetas y valores basados en los datos de estadoLogistico
+        const labels = Object.keys(estadoLogistico);
+        const dataValues = Object.values(estadoLogistico);
+
+        estadoLogisticoChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Estado Logístico de Productos',
+                    data: dataValues,
+                    backgroundColor: ['#1abc9c', '#3498db', '#f39c12', '#e74c3c']
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Distribución de Productos por Estado Logístico',
+                        font: {
+                            size: 18
+                        },
+                        padding: {
+                            top: 10,
+                            bottom: 30
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    
+    
+
+    function mostrarGraficoVentasMensuales(ventasMensuales) {
+        const ctx = document.getElementById('ventas-mensuales-chart').getContext('2d');
+        if (ventasMensualesChart) {
+            ventasMensualesChart.destroy();  // Destruir gráfico anterior si existe
+        }
+
     
         const labels = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
         
