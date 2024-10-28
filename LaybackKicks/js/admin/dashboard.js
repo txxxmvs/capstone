@@ -10,40 +10,41 @@ $(document).ready(function() {
     $('#year-select').val(currentYear);
 
     // Variables para almacenar las instancias de los gráficos
-    let montoRetornoChart, estadoLogisticoChart, ventasMensualesChart, categoriasVentasChart, ventasAnualesChart, dispersionPrecioCantidadChart;
+    let montoRetornoChart, estadoLogisticoChart, ventasMensualesChart, ventasPorMarcaChart, ventasAnualesChart, dispersionPrecioCantidadChart;
 
     // Función para cargar los datos del dashboard
     function cargarDatosDashboard(mes, año) {
-        $.ajax({
-            url: `http://localhost:3000/api/dashboard?mes=${mes}&año=${año}`,
-            method: 'GET',
-            success: function(data) {
-                console.log(data);  // Verificar la respuesta del servidor en la consola
+    $.ajax({
+        url: `http://localhost:3000/api/dashboard?mes=${mes}&año=${año}`,
+        method: 'GET',
+        success: function(data) {
+            console.log(data);  // Verificar la respuesta del servidor en la consola
 
-                // Actualizar las métricas en el dashboard
-                $('#monto-invertido').text(data.montoInvertido.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' }));
-                $('#posible-retorno').text(data.posibleRetorno.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' }));
-                $('#total-ventas').text(data.totalVentas.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' }));
+            // Actualizar las métricas en el dashboard
+            $('#monto-invertido').text(data.montoInvertido.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' }));
+            $('#posible-retorno').text(data.posibleRetorno.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' }));
+            $('#total-ventas').text(data.totalVentas.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' }));
 
-                // Nuevas métricas
-                $('#total-productos').text(data.totalProductos);
-                $('#ganancia-estimada').text(data.gananciaEstimada.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' }));
-                $('#promedio-precio-venta').text(data.promedioPrecioVenta.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' }));
+            // Nuevas métricas
+            $('#total-productos').text(data.totalProductos);
+            $('#ganancia-estimada').text(data.gananciaEstimada.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' }));
+            $('#promedio-precio-venta').text(data.promedioPrecioVenta.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' }));
 
-                // Mostrar los gráficos
-                mostrarGraficoMontoRetorno(data.montoInvertido, data.posibleRetorno);
-                mostrarGraficoEstadoLogistico(data.estadoLogistico);
-                mostrarGraficoVentasMensuales(data.ventasMensuales);
-                mostrarGraficoCategoriasVentas(data.categoriasVentas); 
-                mostrarGraficoVentasAnuales(data.ventasAnuales);
-                mostrarGraficoDispersionPrecioCantidad(data.dispersionPrecioCantidad);
+            // Mostrar los gráficos
+            mostrarGraficoMontoRetorno(data.montoInvertido, data.posibleRetorno);
+            mostrarGraficoEstadoLogistico(data.estadoLogistico);
+            mostrarGraficoVentasMensuales(data.ventasMensuales);
+            mostrarGraficoVentasPorMarca(data.ventasPorMarca);
+            mostrarGraficoVentasAnuales(data.ventasAnuales);
+            mostrarGraficoDispersionPrecioCantidad(data.dispersionPrecioCantidad);
 
-            },
-            error: function(error) {
-                console.error('Error al cargar los datos del dashboard', error);
-            }
-        });
-    }
+        },
+        error: function(error) {
+            console.error('Error al cargar los datos del dashboard', error);
+        }
+    });
+}
+
 
     // Función para mostrar el gráfico de Monto Invertido vs Posible Retorno
     function mostrarGraficoMontoRetorno(montoInvertido, posibleRetorno) {
@@ -86,16 +87,22 @@ $(document).ready(function() {
         });
     }
 
-    // Función para mostrar el gráfico de Estado Logístico
+        // Función para mostrar el gráfico de Estado Logístico
     function mostrarGraficoEstadoLogistico(estadoLogistico) {
         const ctx = document.getElementById('estado-logistico-chart').getContext('2d');
         if (estadoLogisticoChart) {
             estadoLogisticoChart.destroy();  // Destruir gráfico anterior si existe
         }
-        
-        const labels = ['En Camino', 'En Bodega', 'Pagándose', 'Cancelada'];
-        const dataValues = estadoLogistico ? estadoLogistico : [30, 50, 10, 10];
-        
+
+        if (!estadoLogistico || Object.keys(estadoLogistico).length === 0) {
+            console.error("Error: 'estadoLogistico' no contiene datos válidos.");
+            return;
+        }
+
+        // Crear etiquetas y valores basados en los datos de estadoLogistico
+        const labels = Object.keys(estadoLogistico);
+        const dataValues = Object.values(estadoLogistico);
+
         estadoLogisticoChart = new Chart(ctx, {
             type: 'pie',
             data: {
@@ -124,26 +131,25 @@ $(document).ready(function() {
             }
         });
     }
+
     
     
 
-    // Función para mostrar el gráfico de Ventas Mensuales
     function mostrarGraficoVentasMensuales(ventasMensuales) {
         const ctx = document.getElementById('ventas-mensuales-chart').getContext('2d');
         if (ventasMensualesChart) {
             ventasMensualesChart.destroy();  // Destruir gráfico anterior si existe
         }
-
+    
         const labels = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
-        const dataValues = ventasMensuales ? ventasMensuales : [5000, 8000, 6000, 12000, 10000, 9000, 15000, 14000, 13000, 16000, 18000, 17000];
-
+        
         ventasMensualesChart = new Chart(ctx, {
             type: 'line',
             data: {
                 labels: labels,
                 datasets: [{
                     label: 'Ventas Mensuales',
-                    data: dataValues,
+                    data: ventasMensuales,
                     borderColor: '#2c3e50',
                     backgroundColor: 'rgba(44, 62, 80, 0.2)',
                     fill: true
@@ -172,23 +178,23 @@ $(document).ready(function() {
             }
         });
     }
+    
 
-    // Función para mostrar el gráfico de Ventas por Categoría
-    function mostrarGraficoCategoriasVentas(categoriasVentas) {
-        const ctx = document.getElementById('categorias-ventas-chart').getContext('2d');
-        if (categoriasVentasChart) {
-            categoriasVentasChart.destroy();  // Destruir gráfico anterior si existe
+    function mostrarGraficoVentasPorMarca(ventasPorMarca) {
+        const ctx = document.getElementById('ventas-por-marca-chart').getContext('2d');
+        if (ventasPorMarcaChart) {
+            ventasPorMarcaChart.destroy();
         }
-
-        const labels = categoriasVentas ? Object.keys(categoriasVentas) : ['Deportivas', 'Casuales', 'Formales', 'Sandalias'];
-        const dataValues = categoriasVentas ? Object.values(categoriasVentas) : [4000, 3000, 5000, 2000];
-
-        categoriasVentasChart = new Chart(ctx, {
+    
+        const labels = Object.keys(ventasPorMarca);
+        const dataValues = Object.values(ventasPorMarca);
+    
+        ventasPorMarcaChart = new Chart(ctx, {
             type: 'bar',
             data: {
                 labels: labels,
                 datasets: [{
-                    label: 'Ventas por Categoría',
+                    label: 'Ventas por Marca',
                     data: dataValues,
                     backgroundColor: ['#3498db', '#e74c3c', '#2ecc71', '#f39c12']
                 }]
@@ -199,7 +205,7 @@ $(document).ready(function() {
                 plugins: {
                     title: {
                         display: true,
-                        text: 'Ventas por Categoría',
+                        text: 'Ventas por Marca',
                         font: {
                             size: 18
                         },
@@ -217,17 +223,17 @@ $(document).ready(function() {
             }
         });
     }
+    
 
-    // Función para mostrar el gráfico de Distribución de Ventas por Año
     function mostrarGraficoVentasAnuales(ventasAnuales) {
         const ctx = document.getElementById('ventas-anuales-chart').getContext('2d');
         if (ventasAnualesChart) {
             ventasAnualesChart.destroy();  // Destruir gráfico anterior si existe
         }
-
-        const labels = ventasAnuales ? Object.keys(ventasAnuales) : ['2020', '2021', '2022', '2023'];
-        const dataValues = ventasAnuales ? Object.values(ventasAnuales) : [25000, 40000, 45000, 50000];
-
+    
+        const labels = Object.keys(ventasAnuales).length > 0 ? Object.keys(ventasAnuales) : ['Sin Datos'];
+        const dataValues = Object.keys(ventasAnuales).length > 0 ? Object.values(ventasAnuales) : [0];
+    
         ventasAnualesChart = new Chart(ctx, {
             type: 'bar',
             data: {
@@ -262,28 +268,21 @@ $(document).ready(function() {
             }
         });
     }
+    
 
+        // Función para mostrar el gráfico de dispersión entre Precio y Cantidad Vendida
     function mostrarGraficoDispersionPrecioCantidad(dispersionData) {
         const ctx = document.getElementById('dispersion-precio-cantidad-chart').getContext('2d');
         if (dispersionPrecioCantidadChart) {
             dispersionPrecioCantidadChart.destroy();  // Destruir gráfico anterior si existe
         }
-    
-        // Datos de ejemplo si no se proporcionan datos reales
-        const sampleData = dispersionData || [
-            { x: 10000, y: 20 },
-            { x: 15000, y: 10 },
-            { x: 20000, y: 5 },
-            { x: 30000, y: 8 },
-            { x: 40000, y: 3 }
-        ];
-    
+
         dispersionPrecioCantidadChart = new Chart(ctx, {
             type: 'scatter',
             data: {
                 datasets: [{
                     label: 'Precio vs Cantidad Vendida',
-                    data: sampleData,
+                    data: dispersionData,  // Utilizar los datos proporcionados
                     backgroundColor: '#3498db'
                 }]
             },
@@ -339,7 +338,7 @@ $(document).ready(function() {
     $('.dashboard-grid .card').on('click', function(event) {
         event.stopPropagation();
         $(this).toggleClass('active');
-        
+
         // Redibujar el gráfico al cambiar el tamaño
         if ($(this).hasClass('active')) {
             if (this.querySelector('canvas').id === 'monto-retorno-chart') {
@@ -352,6 +351,8 @@ $(document).ready(function() {
                 categoriasVentasChart.resize();
             } else if (this.querySelector('canvas').id === 'ventas-anuales-chart') {
                 ventasAnualesChart.resize();
+            } else if (this.querySelector('canvas').id === 'ventas-por-marca-chart') {
+                ventasPorMarcaChart.resize(); // Agrega esta línea para el gráfico de Ventas por Marca
             }
         }
     });
