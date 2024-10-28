@@ -26,7 +26,7 @@ const rutasReportes = require('./rutas/rutasReportes');
 const rutasAutenticacion = require('./rutas/rutasAutenticacion');
 const rutasVentas = require('./rutas/rutasVentas');
 const rutasFacturas = require('./rutas/rutasFacturas'); 
-const rutasLogistica = require('./rutas/rutaslogistica');
+const rutasLogistica = require('./rutas/rutasLogistica');
 
 // Usar las rutas
 app.use('/api/usuarios', rutasUsuarios);

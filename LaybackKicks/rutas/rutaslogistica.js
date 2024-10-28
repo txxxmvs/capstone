@@ -3,7 +3,7 @@ const router = express.Router();
 const controladorLogistica = require('../controladores/controladorLogistica');
 
 // Ruta para obtener los productos con su estado logístico
-router.put('/logistica/:idProducto', controladorLogistica.actualizarEstadoLogistico);
-router.get('/logistica', controladorLogistica.filtrarLogistica);
+router.get('/', controladorLogistica.filtrarLogistica);
+router.put('/:idProducto', controladorLogistica.actualizarEstadoLogistico);
 
 module.exports = router;
