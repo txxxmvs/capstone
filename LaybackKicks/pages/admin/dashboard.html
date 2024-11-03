@@ -137,8 +137,6 @@
         <!-- Fin del carrusel -->
 
             <!-- Sección del Grid después de los productos -->
-        <!-- Sección del Grid después de los productos -->
-    <h2 class="text-center mt-5">Dashboard Gráficos</h2>
     <div class="dashboard-grid mt-3">
         <!-- Gráfico Monto Invertido vs Posible Retorno -->
         <div class="card">
@@ -227,9 +225,30 @@
                 <!-- Aquí se insertan los datos de la API -->
             </tbody>
         </table>
+    </div>
 
-        <button id="enviar-alerta-btn" class="btn btn-primary">Enviar Alertas WhatsApp</button>
-
+    <h2 class="text-center">Configuracion Alertas SMS</h2>
+    <div class="table-container">
+        <div class="row">
+            <div class="col-md-4">
+            <form id="config-alertas" onsubmit="guardarConfiguracion(event)">
+                <label for="telefono">Número de Teléfono:</label>
+                <input type="tel" id="telefono" name="telefono" placeholder="+56912345678" required>
+                
+                <label for="meses">Meses de Alerta:</label>
+                <select id="meses" name="meses">
+                    <option value="1">1 mes</option>
+                    <option value="2">2 meses</option>
+                    <option value="3">3 meses</option>
+                </select>
+                
+                <button type="submit" class="btn btn-primary">Guardar Configuración</button>
+            </form>
+            
+            <button id="enviar-alerta-btn" class="btn btn-primary">Enviar Alertas SMS Manualmente</button>
+            
+            </div>
+        </div>
     </div>
     
 

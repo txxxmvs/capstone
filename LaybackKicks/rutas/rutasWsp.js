@@ -1,7 +1,7 @@
 const express = require('express');
-const { enviarAlertaWsp } = require('../controladores/controladorWsp');
+const { enviarAlertaSms } = require('../controladores/controladorWsp');
 const router = express.Router();
 
-router.get('/enviar-alerta-wsp', enviarAlertaWsp);
+router.get('/enviar-alerta-sms', enviarAlertaSms);
 
 module.exports = router;
