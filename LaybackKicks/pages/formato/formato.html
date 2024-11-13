@@ -42,14 +42,23 @@
         }
 
         .invoice-info {
-            text-align: right;
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .invoice-date {
+            text-align: left;
+            width: 50%;
+            color: #1F2F57;
         }
 
         .invoice-number {
-            color: #1F2F57; /* Color del logo */
+            text-align: center;
+            width: 50%;
+            color: #1F2F57;
             font-size: 20px;
             font-weight: bold;
-            margin-bottom: 5px;
         }
 
         .details {
@@ -69,7 +78,7 @@
         }
 
         th {
-            background-color: #1F2F57; /* Color del logo */
+            background-color: #1F2F57;
             color: #fff;
         }
 
@@ -83,7 +92,6 @@
             font-weight: bold;
         }
 
-        /* Paleta de colores */
         h2, h3 {
             color: #1F2F57; 
         }
@@ -97,22 +105,20 @@
     <div class="container">
         <div class="header">
             <div class="company-info">
-                <img src="/img/logo.jpeg" alt="Logo de la empresa">
+                <img src="logo.jpeg" alt="Logo de la empresa">
                 <h2>LAYBACK KICKS</h2>
                 <p>RUT: 76.129.486-5</p>
-                <p>Venta de zapatillas</p>
+                <p>Razon Social: Venta de zapatillas</p>
                 <p>Dirección: Santiago Centro, Chile</p>
             </div>
             <div class="invoice-info">
-                <p class="invoice-number">Factura Electrónica Nº 135855</p>
-                <p>Fecha: {FECHA_FACTURA}</p>
+                <div class="invoice-date">
+                    <p>Fecha: {FECHA_FACTURA}</p>
+                </div>
+                <div class="invoice-number">
+                    <p>Boleta Electronica Nº {NUMERO_FACTURA}</p>
+                </div>
             </div>
-        </div>
-
-        <div class="details">
-            <p><strong>Cliente:</strong> Nombre del cliente</p>
-            <p><strong>RUT:</strong> Cliente RUT</p>
-            <p><strong>Dirección:</strong> Dirección del cliente</p>
         </div>
 
         <table>
@@ -131,6 +137,8 @@
 
         <div class="totals">
             <p>Total: {TOTAL}</p>
+            <p>IVA (19%): {IVA}</p>
+            <p>Total con IVA: {TOTAL_CON_IVA}</p>
         </div>
     </div>
 </body>
