@@ -165,3 +165,67 @@ canvas {
     left: 35%;
     transform: translateX(-50%);
 }
+
+/* Contenedor para el formulario con flexbox */
+.table-container form {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+/* Estilo para el grupo de cada campo (etiqueta y entrada) */
+.table-container .form-group {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 calc(50% - 10px); /* Ocupa el 50% del ancho del contenedor */
+}
+
+/* Estilo para cada campo de entrada */
+.table-container label {
+    font-weight: bold;
+    color: #000000;
+    margin-bottom: 5px;
+}
+
+.table-container input[type="tel"],
+.table-container select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    background-color: #f8f9fa;
+}
+
+/* Botón para guardar configuración */
+.table-container .btn-primary {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    font-weight: bold;
+    background-color: #3b82f6;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+}
+
+/* Botón para enviar alertas manualmente */
+#enviar-alerta-btn {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    font-weight: bold;
+    background-color: #3b82f6;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+}
+
+#enviar-alerta-btn:hover {
+    background-color: #2563eb;
+}

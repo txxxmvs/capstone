@@ -30,9 +30,10 @@ const enviarAlertaSms = async (req, res) => {
             // Crear el mensaje consolidado con todos los productos que llevan más tiempo en bodega
             const listaProductos = productosAntiguos.map(producto => `ID: ${producto.id_producto}`).join(', ');
             const mensaje = `Los siguientes productos llevan más de ${meses} meses en bodega y no se han vendido: ${listaProductos}.`;
+            //const mensaje = `Productos en bodega por más de ${meses} meses: ${productosAntiguos.length}`;
 
             const message = await client.messages.create({
-                from: '+14432724366',  // Número de Twilio sin el prefijo `whatsapp:`
+                from: '+14432724366',  // Número de Twilio
                 body: mensaje,
                 to: telefono
             });

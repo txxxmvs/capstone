@@ -229,27 +229,27 @@
 
     <h2 class="text-center">Configuracion Alertas SMS</h2>
     <div class="table-container">
-        <div class="row">
-            <div class="col-md-4">
-            <form id="config-alertas" onsubmit="guardarConfiguracion(event)">
+        <form id="config-alertas" onsubmit="guardarConfiguracion(event)">
+            <div class="form-group">
                 <label for="telefono">Número de Teléfono:</label>
                 <input type="tel" id="telefono" name="telefono" placeholder="+56912345678" required>
-                
+            </div>
+            <div class="form-group">
                 <label for="meses">Meses de Alerta:</label>
                 <select id="meses" name="meses">
                     <option value="1">1 mes</option>
                     <option value="2">2 meses</option>
                     <option value="3">3 meses</option>
                 </select>
-                
-                <button type="submit" class="btn btn-primary">Guardar Configuración</button>
-            </form>
-            
-            <button id="enviar-alerta-btn" class="btn btn-primary">Enviar Alertas SMS Manualmente</button>
-            
             </div>
-        </div>
+            
+            <button type="submit" class="btn-primary">Guardar Configuración</button>
+        </form>
+        
+        <button id="enviar-alerta-btn" class="btn-primary">Enviar Alertas SMS Manualmente</button>
+        <h6 class="text-center">*Este botón solo es para realizar pruebas*</h6>
     </div>
+    
     
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
