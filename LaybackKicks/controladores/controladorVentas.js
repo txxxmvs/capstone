@@ -1,6 +1,5 @@
 const pool = require('../bd/bd');
 
-// Registrar venta
 const registrarVenta = async (req, res) => {
     const idProducto = parseInt(req.params.id);
     const { fecha_venta, precio_final, cantidad_venta } = req.body;
@@ -30,8 +29,12 @@ const registrarVenta = async (req, res) => {
         const queryVenta = 'INSERT INTO venta (fecha_venta, precio_final, cantidad_venta, productos_id_producto, usuario_id_usuario) VALUES ($1, $2, $3, $4, $5)';
         await client.query(queryVenta, [fecha_venta, precio_final, cantidad_venta, idProducto, idUsuario]);
 
+        // Actualizar el estado logístico a 'Pagándose'
+        const queryEstadoLogistico = 'UPDATE productos SET estado_logistico = $1 WHERE id_producto = $2';
+        await client.query(queryEstadoLogistico, ['Pagándose', idProducto]);
+
         await client.query('COMMIT');
-        res.status(200).json({ message: 'Venta registrada con éxito' });
+        res.status(200).json({ message: 'Venta registrada con éxito y estado logístico actualizado a Pagándose' });
 
     } catch (err) {
         await client.query('ROLLBACK');

@@ -9,7 +9,10 @@ net start postgresql-x64-16
 npm install nodemailer  ===> este aun no es necesario
 npm install html-pdf 
 npm install express-session
+npm install twilio
+npm install moment
 
+para la API sneakers instalar: npm install express axios cors ejs sneaks-api
 ----------------------------------------------------------------
 
 

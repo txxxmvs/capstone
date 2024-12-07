@@ -1,0 +1,90 @@
+-- Crear la base de datos
+-- CREATE DATABASE NombreBD;  -- No especificaste el nombre de la BD
+
+-- Crear la tabla Usuario
+CREATE TABLE Usuario (
+    id_usuario SERIAL PRIMARY KEY,
+    email VARCHAR(50) NOT NULL,
+    contrasena VARCHAR(50) NOT NULL
+);
+
+-- Crear la tabla Productos
+CREATE TABLE Productos (
+    id_producto SERIAL PRIMARY KEY,
+    modelo VARCHAR(45) NOT NULL,
+    marca VARCHAR(45) NOT NULL,
+    talla DECIMAL(4,1) NOT NULL,  -- Usar DECIMAL para tallas como 10.5
+    condicion VARCHAR(45),
+    precio_compra INT,
+    precio_venta INT,
+    fecha_adquisicion TIMESTAMP,
+    cantidad INT,
+    vendido BOOLEAN DEFAULT FALSE,
+    cantidad_original INT
+);
+
+-- Crear la tabla Proveedores
+CREATE TABLE Proveedores (
+    id_proveedores SERIAL PRIMARY KEY,
+    nombre VARCHAR(45) NOT NULL,
+    telefono VARCHAR(20),
+    email VARCHAR(45),
+    -- Productos_id_producto INT,  -- Eliminado para evitar dependencia innecesaria
+    -- FOREIGN KEY (Productos_id_producto) REFERENCES Productos(id_producto)  -- Eliminada la foreign key
+);
+
+-- Crear la tabla Venta
+CREATE TABLE Venta (
+    id_venta SERIAL PRIMARY KEY,
+    Usuario_id_usuario INT,
+    Productos_id_producto INT,
+    fecha_venta TIMESTAMP,
+    cantidad_venta INT,
+    precio_final INT,  -- Nombre cambiado a precio_final
+    FOREIGN KEY (Usuario_id_usuario) REFERENCES Usuario(id_usuario),
+    FOREIGN KEY (Productos_id_producto) REFERENCES Productos(id_producto)
+);
+
+-- Crear la tabla Factura
+CREATE TABLE Factura (
+    id SERIAL PRIMARY KEY,
+    numero_factura VARCHAR(6) UNIQUE NOT NULL,
+    fecha TIMESTAMP DEFAULT NOW()
+);
+
+-----------------------------------------------------------------------------
+
+-- Insertar un ejemplo en la tabla Usuario
+INSERT INTO Usuario (email, contrasena)
+VALUES ('ej@correo.com', '123456');
+
+-----------------------------------------------------------------------------
+
+-- Crear una función para copiar cantidad a cantidad_original si es NULL
+CREATE OR REPLACE FUNCTION copiar_cantidad_a_original()
+RETURNS TRIGGER AS $$
+BEGIN
+  -- Si el valor de "cantidad_original" es NULL, le asignamos el valor de "cantidad"
+  IF NEW.cantidad_original IS NULL THEN
+    NEW.cantidad_original := NEW.cantidad;
+  END IF;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Crear el trigger que usa la función anterior
+CREATE TRIGGER set_cantidad_original
+BEFORE INSERT ON Productos
+FOR EACH ROW
+EXECUTE FUNCTION copiar_cantidad_a_original();
+
+-----------------------------------------------------------------------------
+
+-- Añadir nueva columna rol en la tabla Usuario
+ALTER TABLE Usuario
+ADD COLUMN rol VARCHAR(50) NOT NULL DEFAULT 'vendedor';
+
+-- Actualizar el rol de un usuario existente
+UPDATE Usuario
+SET rol = 'admin'
+WHERE id_usuario = 1;

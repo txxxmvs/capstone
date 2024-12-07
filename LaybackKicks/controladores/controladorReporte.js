@@ -21,23 +21,31 @@ const generarReporte = (req, res) => {
     case 'no-vendidos':
       consulta = `SELECT id_producto, marca, modelo, talla, condicion, precio_compra, precio_venta, fecha_adquisicion, cantidad, vendido FROM productos WHERE vendido = false`;
       break;
+    case 'cancelado':  
+      consulta = `SELECT id_producto, marca, modelo, talla, condicion, precio_compra, precio_venta, fecha_adquisicion, cantidad, estado_logistico 
+                  FROM productos WHERE estado_logistico = 'Cancelada'`;
+      break;
   }
 
   // Filtros de periodo
   switch (periodo) {
     case 'mensual':
-      filtroFecha = `fecha_adquisicion >= NOW() - INTERVAL '1 month'`;
+      // Tomar desde el primer día del mes actual hasta el último día del mes
+      filtroFecha = `fecha_adquisicion >= date_trunc('month', CURRENT_DATE) AND fecha_adquisicion < date_trunc('month', CURRENT_DATE) + interval '1 month'`;
       break;
     case '3meses':
-      filtroFecha = `fecha_adquisicion >= NOW() - INTERVAL '3 months'`;
+      // Tomar desde el primer día de hace 2 meses hasta el último día del mes actual
+      filtroFecha = `fecha_adquisicion >= date_trunc('month', CURRENT_DATE) - interval '2 months' AND fecha_adquisicion < date_trunc('month', CURRENT_DATE) + interval '1 month'`;
       break;
     case '6meses':
-      filtroFecha = `fecha_adquisicion >= NOW() - INTERVAL '6 months'`;
+      // Tomar desde el primer día de hace 5 meses hasta el último día del mes actual
+      filtroFecha = `fecha_adquisicion >= date_trunc('month', CURRENT_DATE) - interval '5 months' AND fecha_adquisicion < date_trunc('month', CURRENT_DATE) + interval '1 month'`;
       break;
     case 'anual':
-      filtroFecha = `fecha_adquisicion >= NOW() - INTERVAL '1 year'`;
+      // Tomar desde el día exacto de hace 1 año hasta el día actual
+      filtroFecha = `fecha_adquisicion >= CURRENT_DATE - interval '1 year' AND fecha_adquisicion <= CURRENT_DATE`;
       break;
-  }
+  }  
 
   // Añadir el filtro de fecha a la consulta
   if (filtroFecha) {
@@ -47,6 +55,8 @@ const generarReporte = (req, res) => {
       consulta += ` WHERE ${filtroFecha}`;
     }
   }
+
+  consulta += ` ORDER BY fecha_adquisicion DESC`;
 
   // Ejecutar la consulta
   pool.query(consulta, (err, result) => {

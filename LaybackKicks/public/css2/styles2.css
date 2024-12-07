@@ -1,0 +1,88 @@
+/* styles2.css */
+
+/* Estilos generales del cuerpo */
+body {
+    font-family: 'Arial', sans-serif;
+    background-image: url('../img/fondo.png'); 
+    background-size: contain; 
+    background-repeat: no-repeat; 
+    background-color: #20225B; 
+    background-position: center center; 
+    background-attachment: fixed; 
+    margin: 0;
+    padding: 0;
+    color: var(--color-texto); 
+}
+
+/* Estilos para el contenedor principal */
+.container {
+    background-image: url(''); /* Mantén la imagen de fondo si es necesaria */
+    background-color: rgba(32, 34, 91, 0.8); /* Color de fondo con opacidad (80%) */
+    border-radius: 8px; /* Bordes redondeados */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.7); /* Sombra para el contenedor */
+    padding: 20px; /* Espacio interno */
+}
+
+/* Estilo del encabezado */
+h1 {
+    font-family: 'Sixtyfour Convergence', sans-serif; /* Cambia 'Roboto' por la fuente que prefieras */
+    text-align: center; /* Centrado */
+    font-size: 3.5em; /* Tamaño de la fuente */
+    margin-bottom: 20px; /* Margen inferior */
+    color: #ffffff; /* Color del texto */
+}
+
+/* Estilos para el formulario de búsqueda */
+.form-busqueda {
+    text-align: center; /* Centrado de contenido dentro del contenedor */
+    margin-bottom: 30px; /* Margen inferior */
+}
+
+.form-busqueda input {
+    width: 300px; /* Ancho del campo de búsqueda */
+    margin-right: 10px; /* Margen a la derecha */
+    display: inline-block; /* Asegura que el campo y el botón estén en línea */
+}
+
+.form-busqueda button {
+    background-color: #007bff; /* Color de fondo del botón */
+    color: white; /* Color del texto del botón */
+    display: inline-block; /* Asegura que el campo y el botón estén en línea */
+}
+
+/* Nueva regla para centrar el formulario de búsqueda en el contenedor */
+.form-busqueda {
+    display: flex; /* Utiliza flexbox para centrar */
+    justify-content: center; /* Centra horizontalmente */
+}
+
+/* Estilos para las tarjetas de zapatillas */
+.card {
+    border: 1px solid #e6dede; /* Borde visible */
+    border-radius: 8px; /* Bordes redondeados */
+    background-color: rgba(255, 255, 255, 0.7   ); /* Fondo blanco con opacidad (90%) */
+}    
+
+.card-img-top {
+    height: 300px; /* Altura de la imagen */
+    object-fit: cover; /* Mantiene la relación de aspecto */
+}
+
+.card-body {
+    text-align: left; /* Alineación del texto a la izquierda */
+}
+
+.card-title {
+    font-size: 1.25em; /* Tamaño de la fuente del título */
+    color: #007bff; /* Color del título */
+}
+
+/* Estilo para los precios */
+strong {
+    color: #333; /* Color del texto fuerte */
+}
+
+/* Espaciado entre filas */
+.row {
+    margin-bottom: 20px; /* Margen inferior para filas */
+}
