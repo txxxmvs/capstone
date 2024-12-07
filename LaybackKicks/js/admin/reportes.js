@@ -7,42 +7,25 @@ document.getElementById('report-form').addEventListener('submit', function(event
   fetch(`http://localhost:3000/api/reportes/${tipoReporte}?periodo=${periodo}`)
     .then(response => response.json())
     .then(data => {
-      // Definir estilo CSS con el título y la tabla estilizada
+      // Definir estilo CSS para aplicar tanto en pantalla como en el PDF
       const cssStyles = `
         <style>
-          /* Estilos para el título */
-          .titulo {
-            text-align: center;
-            font-size: 2.5em;
-            font-weight: bold;
-            color: black;
-            text-shadow: 2px 2px 4px white;
-            margin-top: 20px;
-          }
-
-          /* Estilos para la tabla */
           table {
             width: 100%;
             border-collapse: collapse;
-            background-color: rgba(32, 34, 91, 0.8); /* Color de fondo con transparencia */
-            color: white;
-            margin-top: 20px;
           }
-
           th, td {
-            border: 1px solid #ccc;
+            border: 1px solid black;
             padding: 8px;
             text-align: center;
           }
-
           th {
-            background-color: rgba(50, 50, 100, 0.9); /* Color más claro para encabezados */
+            background-color: #f2f2f2;
           }
         </style>
       `;
 
-      // Añadir el título antes de la tabla
-      let htmlContent = `${cssStyles}<div class="titulo">Reportes Laybackkicks</div><table class="table table-bordered text-center"><thead><tr>`;
+      let htmlContent = `${cssStyles}<table class="table table-bordered text-center"><thead><tr>`;
 
       if (tipoReporte === 'vendidos') {
         htmlContent += `<th>ID Venta</th><th>ID Usuario</th><th>ID Producto</th><th>Fecha Venta</th><th>Cantidad</th><th>Precio Venta Real</th><th>Precio Compra</th><th>Fecha de Compra</th>`;
@@ -79,8 +62,7 @@ document.getElementById('report-form').addEventListener('submit', function(event
       // Mostrar el reporte en pantalla y mantenerlo visible
       document.getElementById('report-result').innerHTML = htmlContent;
       document.getElementById('report-result').style.maxHeight = '400px'; 
-      document.getElementById('report-result').style.overflow = 'auto';
-
+      document.getElementById('report-result').style.overflow = 'auto';    
       // Ahora, se generará el PDF sin eliminar la vista del reporte
       const currentDate = new Date();
       const month = currentDate.toLocaleString('default', { month: 'long' });
@@ -94,11 +76,11 @@ document.getElementById('report-form').addEventListener('submit', function(event
         fetch('http://localhost:3000/api/reportes/generar-pdf', {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json'
+              'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            html: htmlContent,  // HTML con estilo incluido
-            nombreArchivo: `${tipoReporte}_${month}_${year}.pdf`
+              html: htmlContent,  // HTML con estilo incluido
+              nombreArchivo: `${tipoReporte}_${month}_${year}.pdf`
           })
         })    
         .then(response => response.blob())

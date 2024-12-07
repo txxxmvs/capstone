@@ -15,20 +15,20 @@ const obtenerProductosVendidos = (req, res) => {
 
     const params = [];
 
-    // Filtrar por mes y año si se proporcionan
+    // Si se pasa un mes, se filtran los resultados por ese mes usando un parámetro
     if (mes) {
         query += ` AND EXTRACT(MONTH FROM v.fecha_venta) = $1`;
-        params.push(Number(mes));
+        params.push(Number(mes));  // Convertir el mes a un número por seguridad
     }
 
     if (año) {
         query += ` AND EXTRACT(YEAR FROM v.fecha_venta) = $2`;
-        params.push(Number(año));
+        params.push(Number(año));  // Convertir el año a un número por seguridad
     }
 
     query += ' ORDER BY v.fecha_venta DESC';
 
-    // Ejecutar la consulta
+    // Usar los parámetros en la consulta
     pool.query(query, params, (err, result) => {
         if (err) {
             console.error('Error al obtener los productos vendidos:', err);
@@ -58,15 +58,13 @@ const generarFactura = (req, res) => {
 
         if (result.rows.length > 0) {
             const ultimaFactura = result.rows[0].numero_factura;
-            numeroFactura = (parseInt(ultimaFactura, 10) + 1).toString().padStart(6, '0'); // Incrementar y formatear
+            numeroFactura = (parseInt(ultimaFactura, 10) + 1).toString().padStart(6, '0');
         }
 
         // Continuar con la generación de la factura una vez que se tiene el número
         generarFacturaConNumero(req, res, numeroFactura);
     });
 };
-
-const IVA_PERCENTAGE = 0.19; // Definir el porcentaje de IVA
 
 const generarFacturaConNumero = (req, res, numeroFactura) => {
     const { ventas } = req.body;
@@ -109,24 +107,12 @@ const generarFacturaConNumero = (req, res, numeroFactura) => {
             `;
         });
 
-        // Calcular IVA
-        const IVA_PORCENTAJE = 0.19; // 19%
-        const iva = total * IVA_PORCENTAJE; // Cálculo del IVA
-        const totalConIVA = total + iva; // Cálculo del total con IVA
-
-        // Depuración: imprime los valores
-        console.log('Total:', total);
-        console.log('IVA:', iva);
-        console.log('Total con IVA:', totalConIVA);
-
-            // Reemplazar los placeholders en el HTML con los datos generados
-            const fechaFactura = new Date().toLocaleDateString();
-            htmlContent = htmlContent.replace('{TABLA_PRODUCTOS}', productosHTML);
-            htmlContent = htmlContent.replace('{TOTAL}', `$${total.toLocaleString()}`);
-            htmlContent = htmlContent.replace('{IVA}', `$${iva.toLocaleString()}`);
-            htmlContent = htmlContent.replace('{TOTAL_CON_IVA}', `$${totalConIVA.toLocaleString()}`);
-            htmlContent = htmlContent.replace('{FECHA_FACTURA}', fechaFactura);
-            htmlContent = htmlContent.replace('{NUMERO_FACTURA}', numeroFactura); // Insertar el número de factura
+        // Reemplazar los placeholders en el HTML con los datos generados
+        const fechaFactura = new Date().toLocaleDateString();
+        htmlContent = htmlContent.replace('{TABLA_PRODUCTOS}', productosHTML);
+        htmlContent = htmlContent.replace('{TOTAL}', `$${total.toLocaleString()}`);
+        htmlContent = htmlContent.replace('{FECHA_FACTURA}', fechaFactura);
+        htmlContent = htmlContent.replace('{NUMERO_FACTURA}', numeroFactura); // Insertar el número de factura
 
         // Insertar el número de factura en la tabla `factura`
         const insertarFactura = `
@@ -145,7 +131,7 @@ const generarFacturaConNumero = (req, res, numeroFactura) => {
                 if (err) {
                     return res.status(500).send(err);
                 }
-                res.sendFile(result.filename); // Enviar el PDF generado
+                res.sendFile(result.filename);
             });
         });
     });
